@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+.css-h7cjts-MuiButtonBase-root-MuiIconButton-root:hover, .css-189ec4b-MuiButtonBase-root-MuiIconButton-root:hover {
+  background-color: transparent !important; /* No change on hover */
+}
 /* {
   margin: 0;
   padding: 0;
