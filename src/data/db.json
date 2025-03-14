@@ -1,0 +1,97 @@
+{
+  "admins": [
+    {
+      "id": 1,
+      "fullName": "John Smith",
+      "idCard": "AD123456",
+      "password": "admin123"
+    },
+    {
+      "id": 2,
+      "fullName": "Sarah Johnson",
+      "idCard": "AD789012",
+      "password": "admin456"
+    }
+  ],
+  "products": [
+    {
+      "id": 1,
+      "title": "Classic Burger",
+      "img": "https://media.istockphoto.com/id/1144995253/fr/photo/burger-savoureux-sur-une-table-en-bois.jpg?s=2048x2048&w=is&k=20&c=VI6kd_9x2RcpZkzXBehmIAaCbDNd5IzGM1dPFqJfKmk=",
+      "description": "Juicy beef patty with fresh lettuce, tomatoes, cheese, and our special sauce",
+      "price": 12.99,
+      "category": "burgers"
+    },
+    {
+      "id": 2,
+      "title": "Margherita Pizza",
+      "img": "https://media.istockphoto.com/id/1414575281/fr/photo/une-d%C3%A9licieuse-et-savoureuse-pizza-italienne-margherita-aux-tomates-et-mozzarella-de-buffle.jpg?s=2048x2048&w=is&k=20&c=5a409PJ0qm-lHsUf2CeMh7C31kW-qlKEeXmGUrrpln4=",
+      "description": "Traditional Italian pizza with fresh mozzarella, tomatoes, and basil",
+      "price": 15.99,
+      "category": "pizzas"
+    },
+    {
+      "id": 3,
+      "title": "Caesar Salad",
+      "img": "https://media.istockphoto.com/id/1488094618/fr/photo/une-d%C3%A9licieuse-salade-c%C3%A9sar-au-poulet-avec-parmesan-tomates-cro%C3%BBtons-et-vinaigrette.jpg?s=2048x2048&w=is&k=20&c=rNFvt-yX8oxuP9ObakHDAYnqYeIPW-HMOuf5Gb-fbpg=",
+      "description": "Crisp romaine lettuce, parmesan cheese, croutons, and Caesar dressing",
+      "price": 9.99,
+      "category": "salads"
+    },
+    {
+      "id": 4,
+      "title": "Grilled Salmon",
+      "img": "https://media.istockphoto.com/id/1297899281/fr/photo/steaks-de-saumon-frits-chou-fleur-frit-et-champignons-comestibles-frits-sur-table-en-bois.jpg?s=2048x2048&w=is&k=20&c=bTvgEaAYOcyH4mU58DiNWDPVeXrZ7-SOtiaymkNmOVA=",
+      "description": "Fresh Atlantic salmon with herbs, served with seasonal vegetables",
+      "price": 24.99,
+      "category": "mains"
+    },
+    {
+      "id": 5,
+      "title": "Chocolate Lava Cake",
+      "img": "https://media.istockphoto.com/id/497895949/fr/photo/g%C3%A2teau-de-lave.jpg?s=2048x2048&w=is&k=20&c=xz6E1A8jOwZbbh5JsV_Wt5CIs9mKerNRaIH297lkZm8=",
+      "description": "Warm chocolate cake with a molten center, served with vanilla ice cream",
+      "price": 8.99,
+      "category": "desserts"
+    },
+    {
+      "id": 6,
+      "title": "Pasta Carbonara",
+      "img": "https://media.istockphoto.com/id/1142391463/fr/photo/p%C3%A2tes-carbonara.jpg?s=2048x2048&w=is&k=20&c=yZSs34aRhfeAFUKCeV0wKdJIQgMYi6l6lIDMaC-wizc=",
+      "description": "Spaghetti with creamy sauce, pancetta, egg, and parmesan cheese",
+      "price": 16.99,
+      "category": "pasta"
+    },
+    {
+      "id": 7,
+      "title": "Chicken Wings",
+      "img": "https://media.istockphoto.com/id/1285462667/fr/photo/ailes-de-poulet-frits-avec-sauce-chili-doux-sur-papier-blanc.jpg?s=2048x2048&w=is&k=20&c=Qx0_3_Fgg7NPKxdytI7Bs11CRyaa-y-UKE0KAJfe4RA=",
+      "description": "Crispy wings tossed in your choice of sauce: BBQ, Buffalo, or Honey Garlic",
+      "price": 13.99,
+      "category": "appetizers"
+    },
+    {
+      "id": 8,
+      "title": "Vegetable Stir Fry",
+      "img": "https://media.istockphoto.com/id/642065070/fr/photo/boeuf-et-brocoli-stir-fry.jpg?s=2048x2048&w=is&k=20&c=_PdEMa_L5gx67mbAPZgrwjmGnD40yfEKaH7q0CtgxbY=",
+      "description": "Fresh seasonal vegetables stir-fried in Asian sauce with steamed rice",
+      "price": 14.99,
+      "category": "vegetarian"
+    },
+    {
+      "id": 9,
+      "title": "Pasta",
+      "img": "https://media.istockphoto.com/id/1215312647/fr/photo/fettuccine-de-p%C3%A2tes-avec-sauce-rago%C3%BBt-de-b%C5%93uf-dans-un-bol-noir-fond-gris-fermez-vous-vers-le.jpg?s=2048x2048&w=is&k=20&c=g_-jurc9FtJ5uXnRQAaeATX1jo9LnHVvLRagN4NKz4A=",
+      "description": "Spaghetti with creamy sauce, pancetta, egg, and parmesan cheese",
+      "price": 16.99,
+      "category": "pasta"
+    },{
+      "id": 10,
+      "title": "Classic Burger",
+      "img": "https://media.istockphoto.com/id/1398630614/fr/photo/cheeseburger-au-bacon-sur-un-pain-grill%C3%A9.jpg?s=2048x2048&w=is&k=20&c=70vibGlWdV4yxNVDhhofp31qciU0PrBsrHrLOfGJxfQ=",
+      "description": "Juicy beef patty with fresh lettuce, tomatoes, cheese, and our special sauce",
+      "price": 12.99,
+      "category": "burgers"
+    }
+  ]
+} 
