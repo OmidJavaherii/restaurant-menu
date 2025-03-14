@@ -1,0 +1,46 @@
+@import "tailwindcss";
+
+/* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+} */
+
+.light-theme {
+  --bg-primary: #ffffff;
+  --bg-secondary: #f0f2f5;
+  --text-primary: #1a1a1a;
+  background: linear-gradient(45deg, var(--bg-primary), var(--bg-secondary));
+  color: var(--text-primary);
+}
+
+.dark-theme {
+  --bg-primary: #121212;
+  --bg-secondary: #1e1e1e;
+  --text-primary: #ffffff;
+  background: linear-gradient(45deg, var(--bg-primary), var(--bg-secondary));
+  color: var(--text-primary);
+}
+
+body {
+  min-height: 100vh;
+  transition: all 0.3s ease;
+}
+
+.app-container {
+  min-height: 100vh;
+  background-size: 400% 400%;
+  animation: gradient 15s ease infinite;
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+} 
