@@ -1,7 +1,7 @@
 "use client";
 
 import { Container, Typography, Box, Paper, Grid } from "@mui/material";
-import { Restaurant, AccessTime, LocationOn, Phone } from "@mui/icons-material";
+import { AccessTime, LocationOn, Phone } from "@mui/icons-material";
 
 
 export default function About() {
