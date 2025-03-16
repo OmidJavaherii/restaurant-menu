@@ -44,7 +44,7 @@ export default function Home() {
           </Button>
         </Link>
 
-        <Link href="/admin" className="no-underline">
+        <Link href="/login" className="no-underline">
           <Button
             variant="outlined"
             size="large"
