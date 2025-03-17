@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css?family=Roboto+Mono');
 
 /* RGB Colors */
 :root {
@@ -130,7 +131,7 @@ body {
 
 /* Button styles */
 .btn {
-  @apply w-full h-16 flex items-center justify-center gap-2 transition-all duration-200 rounded;
+  @apply w-full h-16 flex items-center justify-center gap-2 transition-all duration-200 rounded cursor-pointer;
 }
 
 .btn-primary {
@@ -150,7 +151,7 @@ body {
 }
 
 .theme-toggle {
-  @apply w-full h-16 border-2 border-current rounded flex items-center justify-center gap-2 transition-colors;
+  @apply w-full h-16 border-2 border-current rounded flex items-center justify-center gap-2 transition-colors cursor-pointer;
 }
 
 .theme-toggle:hover {
@@ -233,6 +234,10 @@ body {
 .dark-bg-secondary {
   background-color: var(--dark-secondary);
 }
+.bg-dark-secondary {
+  background-color: #000;
+  color: #fff;
+}
 
 .bg-accent {
   background-color: var(--light-accent);
@@ -280,3 +285,31 @@ body {
   background-color: transparent !important;
 }
 
+/* not found page */
+
+.not-found-page {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 16px;
+}
+
+.handle {
+  background: #ffe500;
+  width: 14px;
+  height: 30px;
+  margin-top: 1px;
+}
+.not-found-text {
+  color: #fff;
+}
+
+.homeButton {
+  background: #ffe500;
+  color: #000;
+  font-family: "Roboto Mono", monospace;
+  transition: background-color 0.3s;
+  cursor: pointer;
+}
+
+.homeButton:hover {
+  background: #ffd700;
+}

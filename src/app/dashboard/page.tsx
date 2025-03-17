@@ -63,7 +63,7 @@ import { toast } from "react-hot-toast";
 import { useOrders } from "@/hooks/useOrders";
 import { QRCodeSVG } from "qrcode.react";
 import { useThemeStore } from "@/store/themeStore";
-import { useQueryClient } from '@tanstack/react-query';
+import { useQueryClient } from "@tanstack/react-query";
 
 // Define interfaces
 interface Product {
@@ -223,18 +223,18 @@ export default function DashboardPage() {
     switch (newValue) {
       case 0: // Dashboard tab
         // Refetch all data
-        queryClient.invalidateQueries({ queryKey: ['products'] });
-        queryClient.invalidateQueries({ queryKey: ['admins'] });
-        queryClient.invalidateQueries({ queryKey: ['orders'] });
+        queryClient.invalidateQueries({ queryKey: ["products"] });
+        queryClient.invalidateQueries({ queryKey: ["admins"] });
+        queryClient.invalidateQueries({ queryKey: ["orders"] });
         break;
       case 1: // Products tab
-        queryClient.invalidateQueries({ queryKey: ['products'] });
+        queryClient.invalidateQueries({ queryKey: ["products"] });
         break;
       case 2: // Admins tab
-        queryClient.invalidateQueries({ queryKey: ['admins'] });
+        queryClient.invalidateQueries({ queryKey: ["admins"] });
         break;
       case 3: // Orders tab
-        queryClient.invalidateQueries({ queryKey: ['orders'] });
+        queryClient.invalidateQueries({ queryKey: ["orders"] });
         break;
     }
   };
@@ -591,8 +591,10 @@ export default function DashboardPage() {
           className="w-64"
         >
           <Box
-          //  className="w-64"
-          className={` w-64 h-screen ${isDarkMode ? 'dark bg-secondary' : ''}`}
+            //  className="w-64"
+            className={` w-64 h-screen ${
+              isDarkMode ? "dark bg-secondary" : ""
+            }`}
           >
             <Box className="p-4 bg-blue-600 text-white">
               <Typography variant="h6" className="font-bold">
@@ -691,93 +693,121 @@ export default function DashboardPage() {
             </Tabs>
           </AppBar>
 
-        {/* Main content area */}
-        <main className="flex-1 overflow-y-auto p-4">
-          <TabPanel value={tabValue} index={0}>
-            <Typography variant="h4" className="mb-6">
-              Welcome to the Admin Dashboard
-            </Typography>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
-              <Paper className="p-6 shadow-md">
-                <Typography variant="h6" className="mb-2">
-                  Total Products
-                </Typography>
-                <Typography variant="h3" className="font-bold text-blue-600">
-                  {products?.length || 0}
-                </Typography>
-              </Paper>
-
-              <Paper
-                elevation={3}
-                className={`p-6 ${
-                  isDarkMode ? "bg-gray-800" : "bg-white"
-                }`}
-              >
-                <Box className="flex items-center justify-between mb-4">
-                  <Typography variant="h6" className={isDarkMode ? "text-white" : ""}>
-                    Total Admins
-                  </Typography>
-                  <PeopleIcon className={isDarkMode ? "text-white" : "text-gray-600"} />
-                </Box>
-                {adminsLoading ? (
-                  <Box className="flex justify-center items-center h-16">
-                    <CircularProgress size={24} />
+          {/* Main content area */}
+          <main className="flex-1 overflow-y-auto p-4">
+            <TabPanel value={tabValue} index={0}>
+              <Typography variant="h4" className="mb-6">
+                Welcome to the Admin Dashboard
+              </Typography>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
+                <Paper className="p-6 shadow-md">
+                  <Box className="flex items-center justify-between mb-4">
+                    <Typography variant="h6" className="mb-2">
+                      Total Products
+                    </Typography>
+                    <InventoryIcon />
                   </Box>
-                ) : error ? (
-                  <Typography variant="h3" className="font-bold text-red-600">
-                    Error
+                  <Typography variant="h3" className="font-bold text-blue-600">
+                    {products?.length || 0}
                   </Typography>
-                ) : (
-                  <Typography variant="h3" className="font-bold text-green-600">
-                    {admins.length}
+                </Paper>
+
+                <Paper
+                  elevation={3}
+                  className={`p-6 ${isDarkMode ? "bg-gray-800" : "bg-white"}`}
+                >
+                  <Box className="flex items-center justify-between mb-4">
+                    <Typography variant="h6">Total Admins</Typography>
+                    <PeopleIcon />
+                  </Box>
+                  {adminsLoading ? (
+                    <Box className="flex justify-center items-center h-16">
+                      <CircularProgress size={24} />
+                    </Box>
+                  ) : error ? (
+                    <Typography variant="h3" className="font-bold text-red-600">
+                      Error
+                    </Typography>
+                  ) : (
+                    <Typography
+                      variant="h3"
+                      className="font-bold text-green-600"
+                    >
+                      {admins.length}
+                    </Typography>
+                  )}
+                </Paper>
+
+                <Paper className="p-6 shadow-md">
+                  <Box className="flex items-center justify-between mb-4">
+                    <Typography variant="h6" className="mb-2">
+                      Total Orders
+                    </Typography>
+                    <PrintIcon />
+                  </Box>
+                  <Typography
+                    variant="h3"
+                    className="font-bold text-purple-600"
+                  >
+                    {orders?.length || 0}
                   </Typography>
-                )}
-              </Paper>
+                </Paper>
 
-              <Paper className="p-6 shadow-md">
-                <Typography variant="h6" className="mb-2">
-                  Total Orders
-                </Typography>
-                <Typography variant="h3" className="font-bold text-purple-600">
-                  {orders?.length || 0}
-                </Typography>
-              </Paper>
+                <Paper className="p-6 shadow-md">
+                  <Box className="flex items-center justify-between mb-4">
+                    <Typography variant="h6" className="mb-2">
+                      Total Stock
+                    </Typography>
+                    <DashboardIcon />
+                  </Box>
+                  <Typography
+                    variant="h3"
+                    className="font-bold text-purple-600"
+                  >
+                    {(products as Product[])?.reduce(
+                      (total: number, product: Product) =>
+                        total + (product.stock || 0),
+                      0
+                    ) || 0}
+                  </Typography>
+                </Paper>
 
-              <Paper className="p-6 shadow-md">
-                <Typography variant="h6" className="mb-2">
-                  Total Stock
-                </Typography>
-                <Typography variant="h3" className="font-bold text-purple-600">
-                  {(products as Product[])?.reduce(
-                    (total: number, product: Product) =>
-                      total + (product.stock || 0),
-                    0
-                  ) || 0}
-                </Typography>
-              </Paper>
-
-              <Paper className="p-6 shadow-md">
-                <Typography variant="h6" className="mb-2">
-                Pending Orders
-                </Typography>
-                <Typography variant="h3" className="font-bold text-red-600 dark:text-red-400" >
-                {orders?.filter((order: Order) => order.status === "pending")
-                    .length || 0}
-                </Typography>
-              </Paper>
+                <Paper className="p-6 shadow-md">
+                  <Box className="flex items-center justify-between mb-4">
+                    <Typography variant="h6" className="mb-2">
+                      Pending Orders
+                    </Typography>
+                    <EditIcon />
+                  </Box>
+                  <Typography
+                    variant="h3"
+                    className="font-bold text-red-600 dark:text-red-400"
+                  >
+                    {orders?.filter(
+                      (order: Order) => order.status === "pending"
+                    ).length || 0}
+                  </Typography>
+                </Paper>
               </div>
-          </TabPanel>
+            </TabPanel>
 
-          <TabPanel value={tabValue} index={1}>
-            <div className="flex justify-between items-center mb-6">
-            <Typography variant="h4">Products Management</Typography>
-            <Fab color="primary" aria-label="add" size="medium"onClick={handleOpenAddProductModal}>
+            <TabPanel value={tabValue} index={1}>
+              <div className="flex justify-between items-center mb-6">
+                <Typography variant="h4">Products Management</Typography>
+                <Fab
+                  color="primary"
+                  aria-label="add"
+                  size="medium"
+                  onClick={handleOpenAddProductModal}
+                >
                   <AddIcon />
                 </Fab>
-            </div>
-            <TableContainer component={Paper} className="shadow-md">
+              </div>
+              <TableContainer component={Paper} className="shadow-md">
                 <Table>
-                  <TableHead className={`${isDarkMode ? 'dark bg-secondary' : ''}`}>
+                  <TableHead
+                    className={`${isDarkMode ? "dark bg-secondary" : ""}`}
+                  >
                     <TableRow>
                       <TableCell>ID</TableCell>
                       <TableCell>Name</TableCell>
@@ -801,32 +831,31 @@ export default function DashboardPage() {
                           <TableCell>{product.id}</TableCell>
                           <TableCell>{product.title}</TableCell>
                           {(product.discount ?? 0) > 0 ? (
-                                <TableCell>
-                                  $
-                                  {(
-                                    product.price *
-                                    (1 - (product.discount ?? 0) / 100)
-                                  ).toFixed(2)}
-                                <span className="ml-2 text-red-600 dark:text-red-400 line-through">
-                                  ${product.price.toFixed(2)}
-                                </span>
-                                </TableCell>
-                              
-                            ) : (
-                              <TableCell>
+                            <TableCell>
+                              $
+                              {(
+                                product.price *
+                                (1 - (product.discount ?? 0) / 100)
+                              ).toFixed(2)}
+                              <span className="ml-2 text-red-600 dark:text-red-400 line-through">
                                 ${product.price.toFixed(2)}
-                              </TableCell>
-                            )}
+                              </span>
+                            </TableCell>
+                          ) : (
+                            <TableCell>${product.price.toFixed(2)}</TableCell>
+                          )}
                           <TableCell>{product.stock}</TableCell>
-                          <TableCell>{(product.discount ?? 0) > 0
+                          <TableCell>
+                            {(product.discount ?? 0) > 0
                               ? `${product.discount ?? 0}%`
-                              : "-"}</TableCell>
+                              : "-"}
+                          </TableCell>
                           <TableCell>{product.category}</TableCell>
                           <TableCell align="right">
                             <IconButton
-                            onClick={() =>
-                              handleOpenEditProductModal(product)
-                            }
+                              onClick={() =>
+                                handleOpenEditProductModal(product)
+                              }
                               color="primary"
                               size="small"
                               className="mr-1"
@@ -836,7 +865,10 @@ export default function DashboardPage() {
                             <IconButton
                               onClick={() =>
                                 handleOpenDeleteProductModal(product)
-                              } color="error" size="small">
+                              }
+                              color="error"
+                              size="small"
+                            >
                               <DeleteIcon />
                             </IconButton>
                           </TableCell>
@@ -847,17 +879,24 @@ export default function DashboardPage() {
                 </Table>
               </TableContainer>
             </TabPanel>
-                            
+
             <TabPanel value={tabValue} index={2}>
               <div className="flex justify-between items-center mb-6">
                 <Typography variant="h4">Admins Management</Typography>
-                <Fab color="primary" aria-label="add" size="medium" onClick={handleOpenAddAdminModal}>
+                <Fab
+                  color="primary"
+                  aria-label="add"
+                  size="medium"
+                  onClick={handleOpenAddAdminModal}
+                >
                   <AddIcon />
                 </Fab>
               </div>
               <TableContainer component={Paper} className="shadow-md">
                 <Table>
-                  <TableHead className={`${isDarkMode ? 'dark bg-secondary' : ''}`}>
+                  <TableHead
+                    className={`${isDarkMode ? "dark bg-secondary" : ""}`}
+                  >
                     <TableRow>
                       <TableCell>ID</TableCell>
                       <TableCell>Name</TableCell>
@@ -887,9 +926,9 @@ export default function DashboardPage() {
                             >
                               <EditIcon />
                             </IconButton>
-                            <IconButton 
-                              color="error" 
-                              size="small" 
+                            <IconButton
+                              color="error"
+                              size="small"
                               onClick={() => handleOpenDeleteAdminModal(admin)}
                             >
                               <DeleteIcon />
@@ -902,118 +941,124 @@ export default function DashboardPage() {
                 </Table>
               </TableContainer>
             </TabPanel>
-          
 
-          <TabPanel value={tabValue} index={3}>
-            <div className="flex justify-between items-center mb-6">
-              <Typography variant="h4">Orders Management</Typography>
-            </div>
-            <TableContainer component={Paper} className="shadow-md">
-              <Table>
-                <TableHead className={`${isDarkMode ? 'dark bg-secondary' : ''}`}>
-                  <TableRow>
-                    <TableCell>Order ID</TableCell>
-                    <TableCell>Phone</TableCell>
-                    <TableCell>Place #</TableCell>
-                    <TableCell>Date</TableCell>
-                    <TableCell>Total</TableCell>
-                    <TableCell>Status</TableCell>
-                    <TableCell align="right">Actions</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {ordersLoading ? (
+            <TabPanel value={tabValue} index={3}>
+              <div className="flex justify-between items-center mb-6">
+                <Typography variant="h4">Orders Management</Typography>
+              </div>
+              <TableContainer component={Paper} className="shadow-md">
+                <Table>
+                  <TableHead
+                    className={`${isDarkMode ? "dark bg-secondary" : ""}`}
+                  >
                     <TableRow>
-                      <TableCell colSpan={7} align="center">
-                        Loading orders...
-                      </TableCell>
+                      <TableCell>Order ID</TableCell>
+                      <TableCell>Phone</TableCell>
+                      <TableCell>Place #</TableCell>
+                      <TableCell>Date</TableCell>
+                      <TableCell>Total</TableCell>
+                      <TableCell>Status</TableCell>
+                      <TableCell align="right">Actions</TableCell>
                     </TableRow>
-                  ) : orders && orders.length > 0 ? (
-                    orders.map((order: Order) => (
-                      <TableRow key={order.id}>
-                        <TableCell>{order.id}</TableCell>
-                        <TableCell>{order.customerPhone || "N/A"}</TableCell>
-                        <TableCell>{order.placeNumber || "N/A"}</TableCell>
-                        <TableCell>
-                          {new Date(order.createdAt).toLocaleDateString()}
-                        </TableCell>
-                        <TableCell>${order.totalAmount.toFixed(2)}</TableCell>
-                        <TableCell>
-                          <Box
-                            sx={{
-                              display: "inline-block",
-                              px: 1,
-                              py: 0.5,
-                              borderRadius: 1,
-                              bgcolor:
-                                order.status === "completed"
-                                  ? "success.light"
-                                  : order.status === "pending"
-                                  ? "warning.light"
-                                  : "error.light",
-                              color:
-                                order.status === "completed"
-                                  ? "success.dark"
-                                  : order.status === "pending"
-                                  ? "warning.dark"
-                                  : "error.dark",
-                            }}
-                          >
-                            {order.status
-                              ? order.status.charAt(0).toUpperCase() +
-                                order.status.slice(1)
-                              : ""}
-                          </Box>
-                        </TableCell>
-                        <TableCell align="right">
-                          <Box
-                            sx={{
-                              display: "flex",
-                              flexDirection: { xs: "row", md: "column" },
-                              gap: { md: 1 },
-                              alignItems: "flex-end",
-                            }}
-                          >
-                            <Button
-                              size="small"
-                              variant="outlined"
-                              color="primary"
-                              onClick={() => handleOpenOrderDetailsModal(order)}
-                              sx={{
-                                mb: { xs: 0, md: 1 },
-                                mr: { xs: 2, md: 0 },
-                              }}
-                            >
-                              Details
-                            </Button>
-                            {order.status === "pending" && (
-                              <Button
-                                size="small"
-                                variant="contained"
-                                color="success"
-                                onClick={() =>
-                                  handleUpdateOrderStatus(order.id, "completed")
-                                }
-                              >
-                                Complete
-                              </Button>
-                            )}
-                          </Box>
+                  </TableHead>
+                  <TableBody>
+                    {ordersLoading ? (
+                      <TableRow>
+                        <TableCell colSpan={7} align="center">
+                          Loading orders...
                         </TableCell>
                       </TableRow>
-                    ))
-                  ) : (
-                    <TableRow>
-                      <TableCell colSpan={7} align="center">
-                        No orders found
-                      </TableCell>
-                    </TableRow>
-                  )}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </TabPanel>
-        </main>
+                    ) : orders && orders.length > 0 ? (
+                      orders.map((order: Order) => (
+                        <TableRow key={order.id}>
+                          <TableCell>{order.id}</TableCell>
+                          <TableCell>{order.customerPhone || "N/A"}</TableCell>
+                          <TableCell>{order.placeNumber || "N/A"}</TableCell>
+                          <TableCell>
+                            {new Date(order.createdAt).toLocaleDateString()}
+                          </TableCell>
+                          <TableCell>${order.totalAmount.toFixed(2)}</TableCell>
+                          <TableCell>
+                            <Box
+                              sx={{
+                                display: "inline-block",
+                                px: 1,
+                                py: 0.5,
+                                borderRadius: 1,
+                                bgcolor:
+                                  order.status === "completed"
+                                    ? "success.light"
+                                    : order.status === "pending"
+                                    ? "warning.light"
+                                    : "error.light",
+                                color:
+                                  order.status === "completed"
+                                    ? "success.dark"
+                                    : order.status === "pending"
+                                    ? "warning.dark"
+                                    : "error.dark",
+                              }}
+                            >
+                              {order.status
+                                ? order.status.charAt(0).toUpperCase() +
+                                  order.status.slice(1)
+                                : ""}
+                            </Box>
+                          </TableCell>
+                          <TableCell align="right">
+                            <Box
+                              sx={{
+                                display: "flex",
+                                flexDirection: { xs: "row", md: "column" },
+                                gap: { md: 1 },
+                                alignItems: "flex-end",
+                              }}
+                            >
+                              <Button
+                                size="small"
+                                variant="outlined"
+                                color="primary"
+                                onClick={() =>
+                                  handleOpenOrderDetailsModal(order)
+                                }
+                                sx={{
+                                  mb: { xs: 0, md: 1 },
+                                  mr: { xs: 2, md: 0 },
+                                }}
+                              >
+                                Details
+                              </Button>
+                              {order.status === "pending" && (
+                                <Button
+                                  size="small"
+                                  variant="contained"
+                                  color="success"
+                                  onClick={() =>
+                                    handleUpdateOrderStatus(
+                                      order.id,
+                                      "completed"
+                                    )
+                                  }
+                                >
+                                  Complete
+                                </Button>
+                              )}
+                            </Box>
+                          </TableCell>
+                        </TableRow>
+                      ))
+                    ) : (
+                      <TableRow>
+                        <TableCell colSpan={7} align="center">
+                          No orders found
+                        </TableCell>
+                      </TableRow>
+                    )}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </TabPanel>
+          </main>
         </div>
       </div>
 
@@ -1035,16 +1080,14 @@ export default function DashboardPage() {
             <Typography variant="h6">
               {productModalMode === "add" ? "Add Product" : "Edit Product"}
             </Typography>
-            <IconButton
-              onClick={handleCloseProductModal}
-              size="small"
-            >
+            <IconButton onClick={handleCloseProductModal} size="small">
               <CloseIcon className="h-6 w-6" />
             </IconButton>
           </DialogTitle>
-          <DialogContent 
-          style={{paddingTop: '15px', margin: '2px'}}
-          className="flex flex-col gap-4 ">
+          <DialogContent
+            style={{ paddingTop: "15px", margin: "2px" }}
+            className="flex flex-col gap-4 "
+          >
             <TextField
               fullWidth
               label="Title"
@@ -1166,16 +1209,15 @@ export default function DashboardPage() {
             </Box>
           </DialogContent>
           <DialogActions className="p-4 border-t">
-            <Button
-              onClick={handleCloseProductModal}
-              variant="outlined"
-            >
+            <Button onClick={handleCloseProductModal} variant="outlined">
               Cancel
             </Button>
             <Button
               type="submit"
               variant="contained"
-              disabled={uploading || addProduct.isPending || updateProduct.isPending}
+              disabled={
+                uploading || addProduct.isPending || updateProduct.isPending
+              }
               className="btn-primary disabled:opacity-50"
             >
               {uploading || addProduct.isPending || updateProduct.isPending ? (
@@ -1205,10 +1247,7 @@ export default function DashboardPage() {
           </DialogContentText>
         </DialogContent>
         <DialogActions className="p-4 border-t">
-          <Button
-            onClick={handleCloseDeleteProductModal}
-            variant="outlined"
-          >
+          <Button onClick={handleCloseDeleteProductModal} variant="outlined">
             Cancel
           </Button>
           <Button
@@ -1230,24 +1269,24 @@ export default function DashboardPage() {
         fullWidth
         className="fixed inset-0 z-50"
       >
-        <form onSubmit={(e) => {
-          e.preventDefault();
-          handleSubmitAdmin();
-        }}>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleSubmitAdmin();
+          }}
+        >
           <DialogTitle className="flex items-center justify-between p-4 border-b">
             <Typography variant="h6">
               {adminModalMode === "add" ? "Add Admin" : "Edit Admin"}
             </Typography>
-            <IconButton
-              onClick={handleCloseAdminModal}
-              size="small"
-            >
+            <IconButton onClick={handleCloseAdminModal} size="small">
               <CloseIcon className="h-6 w-6" />
             </IconButton>
           </DialogTitle>
           <DialogContent
-          style={{paddingTop: '15px', margin: '2px'}}
-          className="flex flex-col gap-4">
+            style={{ paddingTop: "15px", margin: "2px" }}
+            className="flex flex-col gap-4"
+          >
             <TextField
               fullWidth
               label="Full Name"
@@ -1270,22 +1309,25 @@ export default function DashboardPage() {
             />
             <TextField
               fullWidth
-              label={adminModalMode === "add" ? "Password" : "New Password (leave empty to keep current)"}
+              label={
+                adminModalMode === "add"
+                  ? "Password"
+                  : "New Password (leave empty to keep current)"
+              }
               name="password"
               type="password"
               value={adminFormData.password}
               onChange={handleAdminFormChange}
               required={adminModalMode === "add"}
               error={!!passwordError}
-              helperText={passwordError || "Password must be at least 6 characters long"}
+              helperText={
+                passwordError || "Password must be at least 6 characters long"
+              }
               className="mb-4"
             />
           </DialogContent>
           <DialogActions className="p-4 border-t">
-            <Button
-              onClick={handleCloseAdminModal}
-              variant="outlined"
-            >
+            <Button onClick={handleCloseAdminModal} variant="outlined">
               Cancel
             </Button>
             <Button
@@ -1326,10 +1368,7 @@ export default function DashboardPage() {
           </DialogContentText>
         </DialogContent>
         <DialogActions className="p-4 border-t">
-          <Button
-            onClick={handleCloseDeleteAdminModal}
-            variant="outlined"
-          >
+          <Button onClick={handleCloseDeleteAdminModal} variant="outlined">
             Cancel
           </Button>
           <Button
@@ -1377,7 +1416,9 @@ export default function DashboardPage() {
         }}
       >
         <DialogTitle className="bg-white">
-          <Typography variant="h6" sx={{ color: "#000" }}>Order Details</Typography>
+          <Typography variant="h6" sx={{ color: "#000" }}>
+            Order Details
+          </Typography>
         </DialogTitle>
         <DialogContent className="bg-white">
           <Box id="printable-order" sx={{ color: "#000" }}>
@@ -1389,7 +1430,11 @@ export default function DashboardPage() {
                 mb: 3,
               }}
             >
-              <Typography variant="h4" align="center" sx={{ flex: 1, color: "#000" }}>
+              <Typography
+                variant="h4"
+                align="center"
+                sx={{ flex: 1, color: "#000" }}
+              >
                 Order Receipt
               </Typography>
               <Box sx={{ width: 100, height: 100 }}>
@@ -1401,7 +1446,11 @@ export default function DashboardPage() {
             <Box sx={{ mb: 3 }}>
               <Grid container spacing={2}>
                 <Grid item xs={6}>
-                  <Typography variant="subtitle1" gutterBottom sx={{ color: "#000" }}>
+                  <Typography
+                    variant="subtitle1"
+                    gutterBottom
+                    sx={{ color: "#000" }}
+                  >
                     Customer Details:
                   </Typography>
                   <Typography variant="body2" sx={{ color: "#000" }}>
@@ -1424,7 +1473,11 @@ export default function DashboardPage() {
                 </Grid>
                 <Divider sx={{ my: 2 }} />
                 <Grid item xs={6}>
-                  <Typography variant="subtitle1" gutterBottom sx={{ color: "#000" }}>
+                  <Typography
+                    variant="subtitle1"
+                    gutterBottom
+                    sx={{ color: "#000" }}
+                  >
                     Order Information:
                   </Typography>
                   <Typography variant="body2" sx={{ color: "#000" }}>
@@ -1451,11 +1504,21 @@ export default function DashboardPage() {
                 <TableHead>
                   <TableRow>
                     <TableCell sx={{ color: "#000" }}>Item</TableCell>
-                    <TableCell align="right" sx={{ color: "#000" }}>Original Price</TableCell>
-                    <TableCell align="right" sx={{ color: "#000" }}>Discount</TableCell>
-                    <TableCell align="right" sx={{ color: "#000" }}>Final Price</TableCell>
-                    <TableCell align="right" sx={{ color: "#000" }}>Quantity</TableCell>
-                    <TableCell align="right" sx={{ color: "#000" }}>Total</TableCell>
+                    <TableCell align="right" sx={{ color: "#000" }}>
+                      Original Price
+                    </TableCell>
+                    <TableCell align="right" sx={{ color: "#000" }}>
+                      Discount
+                    </TableCell>
+                    <TableCell align="right" sx={{ color: "#000" }}>
+                      Final Price
+                    </TableCell>
+                    <TableCell align="right" sx={{ color: "#000" }}>
+                      Quantity
+                    </TableCell>
+                    <TableCell align="right" sx={{ color: "#000" }}>
+                      Total
+                    </TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -1470,7 +1533,9 @@ export default function DashboardPage() {
 
                     return (
                       <TableRow key={index}>
-                        <TableCell sx={{ color: "#000" }}>{item.title}</TableCell>
+                        <TableCell sx={{ color: "#000" }}>
+                          {item.title}
+                        </TableCell>
                         <TableCell align="right" sx={{ color: "#000" }}>
                           ${originalPrice.toFixed(2)}
                         </TableCell>
@@ -1480,7 +1545,9 @@ export default function DashboardPage() {
                         <TableCell align="right" sx={{ color: "#000" }}>
                           ${discountedPrice.toFixed(2)}
                         </TableCell>
-                        <TableCell align="right" sx={{ color: "#000" }}>{item.quantity}</TableCell>
+                        <TableCell align="right" sx={{ color: "#000" }}>
+                          {item.quantity}
+                        </TableCell>
                         <TableCell align="right" sx={{ color: "#000" }}>
                           ${itemTotal.toFixed(2)}
                         </TableCell>

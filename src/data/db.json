@@ -7,7 +7,7 @@
       "description": "Juicy beef patty with fresh lettuce, tomatoes, cheese, and our special sauce",
       "price": 12.99,
       "category": "burgers",
-      "stock": 10,
+      "stock": 0,
       "discount": 22.9
     },
     {
@@ -17,7 +17,7 @@
       "description": "Traditional Italian pizza with fresh mozzarella, tomatoes, and basil",
       "price": 15.99,
       "category": "pizzas",
-      "stock": 10,
+      "stock": 2,
       "discount": 12
     },
     {
@@ -28,7 +28,7 @@
       "price": 9.99,
       "category": "salads",
       "stock": 10,
-      "discount": 1
+      "discount": 10
     },
     {
       "id": 4,
@@ -37,7 +37,7 @@
       "description": "Fresh Atlantic salmon with herbs, served with seasonal vegetables",
       "price": 24.99,
       "category": "mains",
-      "stock": 10,
+      "stock": 5,
       "discount": 10
     },
     {
@@ -47,8 +47,8 @@
       "description": "Warm chocolate cake with a molten center, served with vanilla ice cream",
       "price": 8.99,
       "category": "desserts",
-      "stock": 10,
-      "discount": 50
+      "stock": 2,
+      "discount": 16.5
     },
     {
       "id": 6,
