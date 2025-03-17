@@ -2,9 +2,7 @@
 const nextConfig = {
   output: 'standalone',
   experimental: {
-    serverActions: {
-      allowedOrigins: ['localhost:3000']
-    }
+    serverActions: true,
   },
   // Disable tracing during build
   webpack: (config, { isServer }) => {
@@ -13,7 +11,7 @@ const nextConfig = {
         ...config.resolve.fallback,
         fs: false,
         net: false,
-        tls: false
+        tls: false,
       };
     }
     return config;
