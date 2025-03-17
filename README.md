@@ -1,7 +1,8 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-Admin ID: AD123456.
-Password: admin123.
+## Admin ID: AD123456
+## Password: admin123
+
 have fun and feedback please...
 
 It's fullstack poject using Next.js, TypeScript, Graph QL, React Query, React Hook Form, Zustand, Uuid, MUI, Tailwind.
