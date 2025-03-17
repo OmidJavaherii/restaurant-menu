@@ -1,4 +1,106 @@
 {
+  "products": [
+    {
+      "id": 1,
+      "title": "Classic Burger",
+      "img": "/images/classic-burger.jpg",
+      "description": "Juicy beef patty with fresh lettuce, tomatoes, cheese, and our special sauce",
+      "price": 12.99,
+      "category": "burgers",
+      "stock": 2,
+      "discount": 22.9
+    },
+    {
+      "id": 2,
+      "title": "Margherita Pizza",
+      "img": "/images/margherita-pizza.jpg",
+      "description": "Traditional Italian pizza with fresh mozzarella, tomatoes, and basil",
+      "price": 15.99,
+      "category": "pizzas",
+      "stock": 0,
+      "discount": 12
+    },
+    {
+      "id": 3,
+      "title": "Caesar Salad",
+      "img": "/images/caesar-salad.jpg",
+      "description": "Crisp romaine lettuce, parmesan cheese, croutons, and Caesar dressing",
+      "price": 9.99,
+      "category": "salads",
+      "stock": 3,
+      "discount": 1
+    },
+    {
+      "id": 4,
+      "title": "Grilled Salmon",
+      "img": "/images/grilled-salmon.jpg",
+      "description": "Fresh Atlantic salmon with herbs, served with seasonal vegetables",
+      "price": 24.99,
+      "category": "mains",
+      "stock": 0,
+      "discount": 10
+    },
+    {
+      "id": 5,
+      "title": "Chocolate Lava Cake",
+      "img": "/images/chocolate-lava-cake.jpg",
+      "description": "Warm chocolate cake with a molten center, served with vanilla ice cream",
+      "price": 8.99,
+      "category": "desserts",
+      "stock": 0,
+      "discount": 50
+    },
+    {
+      "id": 6,
+      "title": "Pasta Carbonara",
+      "img": "/images/pasta-carbonara.jpg",
+      "description": "Spaghetti with creamy sauce, pancetta, egg, and parmesan cheese",
+      "price": 16.99,
+      "category": "pasta",
+      "stock": 8,
+      "discount": null
+    },
+    {
+      "id": 7,
+      "title": "Chicken Wings",
+      "img": "/images/chicken-wings.jpg",
+      "description": "Crispy wings tossed in your choice of sauce: BBQ, Buffalo, or Honey Garlic",
+      "price": 13.99,
+      "category": "appetizers",
+      "stock": 10,
+      "discount": null
+    },
+    {
+      "id": 8,
+      "title": "Vegetable Stir Fry",
+      "img": "/images/vegetable-stir-fry.jpg",
+      "description": "Fresh seasonal vegetables stir-fried in Asian sauce with steamed rice",
+      "price": 14.99,
+      "category": "vegetarian",
+      "stock": 10,
+      "discount": null
+    },
+    {
+      "id": 9,
+      "title": "Pasta",
+      "img": "/images/pasta.jpg",
+      "description": "Spaghetti with creamy sauce, pancetta, egg, and parmesan cheese",
+      "price": 16.99,
+      "category": "pasta",
+      "stock": 10,
+      "discount": null
+    },
+    {
+      "id": 10,
+      "title": "Cheese Burger",
+      "img": "/images/cheese-burger.jpg",
+      "description": "Juicy beef patty with fresh lettuce, tomatoes, cheese, and our special sauce",
+      "price": 12.99,
+      "category": "burgers",
+      "stock": 10,
+      "discount": null
+    }
+  ],
   "admins": [
     {
       "id": 1,
@@ -10,89 +112,117 @@
       "id": 2,
       "fullName": "Sarah Johnson",
       "idCard": "AD789012",
-      "password": "admin456"
+      "password": "000000"
     }
   ],
-  "products": [
+  "orders": [
     {
-      "id": 1,
-      "title": "Classic Burger",
-      "img": "/images/classic-burger.jpg",
-      "description": "Juicy beef patty with fresh lettuce, tomatoes, cheese, and our special sauce",
-      "price": 12.99,
-      "category": "burgers"
+      "id": "ORDER-1742143271478",
+      "items": [
+        {
+          "productId": "1",
+          "title": "Classic Burger",
+          "price": 10.1322,
+          "originalPrice": 12.99,
+          "discount": 22,
+          "quantity": 1
+        },
+        {
+          "productId": "2",
+          "title": "Margherita Pizza",
+          "price": 14.0712,
+          "originalPrice": 15.99,
+          "discount": 12,
+          "quantity": 1
+        }
+      ],
+      "totalAmount": 24.2034,
+      "status": "completed",
+      "createdAt": "2025-03-16T16:41:26.856Z",
+      "customerName": "ali",
+      "customerPhone": "15641",
+      "placeNumber": "12",
+      "description": ""
     },
     {
-      "id": 2,
-      "title": "Margherita Pizza",
-      "img": "/images/margherita-pizza.jpg",
-      "description": "Traditional Italian pizza with fresh mozzarella, tomatoes, and basil",
-      "price": 15.99,
-      "category": "pizzas"
+      "id": "ORDER-1742211492375",
+      "items": [
+        {
+          "productId": "1",
+          "title": "Classic Burger",
+          "price": 10.01529,
+          "originalPrice": 12.99,
+          "discount": 22.9,
+          "quantity": 1
+        },
+        {
+          "productId": "2",
+          "title": "Margherita Pizza",
+          "price": 14.0712,
+          "originalPrice": 15.99,
+          "discount": 12,
+          "quantity": 1
+        },
+        {
+          "productId": "3",
+          "title": "Caesar Salad",
+          "price": 9.8901,
+          "originalPrice": 9.99,
+          "discount": 1,
+          "quantity": 1
+        },
+        {
+          "productId": "4",
+          "title": "Grilled Salmon",
+          "price": 22.491,
+          "originalPrice": 24.99,
+          "discount": 10,
+          "quantity": 1
+        }
+      ],
+      "totalAmount": 56.46759,
+      "status": "pending",
+      "createdAt": "2025-03-17T11:38:32.918Z",
+      "customerName": "x",
+      "customerPhone": "12345",
+      "placeNumber": "1234",
+      "description": "asdfghjkl;'\\"
     },
     {
-      "id": 3,
-      "title": "Caesar Salad",
-      "img": "/images/caesar-salad.jpg",
-      "description": "Crisp romaine lettuce, parmesan cheese, croutons, and Caesar dressing",
-      "price": 9.99,
-      "category": "salads"
-    },
-    {
-      "id": 4,
-      "title": "Grilled Salmon",
-      "img": "/images/grilled-salmon.jpg",
-      "description": "Fresh Atlantic salmon with herbs, served with seasonal vegetables",
-      "price": 24.99,
-      "category": "mains"
-    },
-    {
-      "id": 5,
-      "title": "Chocolate Lava Cake",
-      "img": "/images/chocolate-lava-cake.jpg",
-      "description": "Warm chocolate cake with a molten center, served with vanilla ice cream",
-      "price": 8.99,
-      "category": "desserts"
-    },
-    {
-      "id": 6,
-      "title": "Pasta Carbonara",
-      "img": "/images/pasta-carbonara.jpg",
-      "description": "Spaghetti with creamy sauce, pancetta, egg, and parmesan cheese",
-      "price": 16.99,
-      "category": "pasta"
-    },
-    {
-      "id": 7,
-      "title": "Chicken Wings",
-      "img": "/images/chicken-wings.jpg",
-      "description": "Crispy wings tossed in your choice of sauce: BBQ, Buffalo, or Honey Garlic",
-      "price": 13.99,
-      "category": "appetizers"
-    },
-    {
-      "id": 8,
-      "title": "Vegetable Stir Fry",
-      "img": "/images/vegetable-stir-fry.jpg",
-      "description": "Fresh seasonal vegetables stir-fried in Asian sauce with steamed rice",
-      "price": 14.99,
-      "category": "vegetarian"
-    },
-    {
-      "id": 9,
-      "title": "Pasta",
-      "img": "/images/pasta.jpg",
-      "description": "Spaghetti with creamy sauce, pancetta, egg, and parmesan cheese",
-      "price": 16.99,
-      "category": "pasta"
-    },
-    {
-      "id": 10,
-      "title": "Cheese Burger",
-      "img": "/images/cheese-burger.jpg",
-      "description": "Juicy beef patty with fresh lettuce, tomatoes, cheese, and our special sauce",
-      "price": 12.99,
-      "category": "burgers"
+      "id": "ORDER-1742211664998",
+      "items": [
+        {
+          "productId": "1",
+          "title": "Classic Burger",
+          "price": 10.01529,
+          "originalPrice": 12.99,
+          "discount": 22.9,
+          "quantity": 1
+        },
+        {
+          "productId": "4",
+          "title": "Grilled Salmon",
+          "price": 22.491,
+          "originalPrice": 24.99,
+          "discount": 10,
+          "quantity": 3
+        },
+        {
+          "productId": "3",
+          "title": "Caesar Salad",
+          "price": 9.8901,
+          "originalPrice": 9.99,
+          "discount": 1,
+          "quantity": 1
+        }
+      ],
+      "totalAmount": 87.37839000000001,
+      "status": "completed",
+      "createdAt": "2025-03-17T11:41:20.663Z",
+      "customerName": "qq",
+      "customerPhone": "15641",
+      "placeNumber": "qq",
+      "description": "qqqqq"
     }
   ]
-} 
+}

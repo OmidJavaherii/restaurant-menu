@@ -1,49 +1,282 @@
 @import "tailwindcss";
 
-.css-h7cjts-MuiButtonBase-root-MuiIconButton-root:hover, .css-189ec4b-MuiButtonBase-root-MuiIconButton-root:hover {
-  background-color: transparent !important; /* No change on hover */
-}
-/* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-} */
+/* RGB Colors */
+:root {
+  /* Light theme */
+  --light-bg: rgb(255, 255, 255);
+  --light-paper: rgb(255, 255, 255);
+  --light-text: rgb(17, 24, 39);
+  --light-border: rgb(75, 85, 99);
+  --light-border-hover: rgb(107, 114, 128);
+  --light-icon: rgb(75, 85, 99);
+  --light-label: rgb(209, 213, 219);
+  --light-input-bg: rgb(255, 255, 255);
+  --light-button: rgb(59, 130, 246);
+  --light-button-hover: rgb(37, 99, 235);
 
-.light-theme {
-  --bg-primary: #ffffff;
-  --bg-secondary: #f0f2f5;
-  --text-primary: #1a1a1a;
-  background: linear-gradient(45deg, var(--bg-primary), var(--bg-secondary));
-  color: var(--text-primary);
+  /* Light theme Tailwind colors */
+  --light-primary: rgb(59, 130, 246);
+  --light-primary-hover: rgb(37, 99, 235);
+  --light-secondary: rgb(107, 114, 128);
+  --light-secondary-hover: rgb(75, 85, 99);
+  --light-accent: rgb(99, 102, 241);
+  --light-accent-hover: rgb(79, 70, 229);
+  --light-success: rgb(34, 197, 94);
+  --light-success-hover: rgb(22, 163, 74);
+  --light-warning: rgb(234, 179, 8);
+  --light-warning-hover: rgb(202, 138, 4);
+  --light-error: rgb(239, 68, 68);
+  --light-error-hover: rgb(220, 38, 38);
+  --light-info: rgb(59, 130, 246);
+  --light-info-hover: rgb(37, 99, 235);
+
+  /* Dark theme */
+  --dark-bg: rgb(20, 31, 46);
+  --dark-paper: rgb(26, 46, 73);
+  --dark-text: rgb(255, 255, 255);
+  --dark-border: rgb(75, 85, 99);
+  --dark-border-hover: rgb(107, 114, 128);
+  --dark-icon: rgb(156, 163, 175);
+  --dark-label: rgb(209, 213, 219);
+  --dark-input-bg: rgb(34, 46, 63);
+  --dark-button: rgb(37, 99, 235);
+  --dark-button-hover: rgb(29, 78, 216);
+
+  /* Dark theme Tailwind colors */
+  --dark-primary: rgb(37, 99, 235);
+  --dark-primary-hover: rgb(29, 78, 216);
+  --dark-secondary: rgb(156, 163, 175);
+  --dark-secondary-hover: rgb(107, 114, 128);
+  --dark-accent: rgb(79, 70, 229);
+  --dark-accent-hover: rgb(67, 56, 202);
+  --dark-success: rgb(22, 163, 74);
+  --dark-success-hover: rgb(21, 128, 61);
+  --dark-warning: rgb(202, 138, 4);
+  --dark-warning-hover: rgb(161, 98, 7);
+  --dark-error: rgb(220, 38, 38);
+  --dark-error-hover: rgb(185, 28, 28);
+  --dark-info: rgb(37, 99, 235);
+  --dark-info-hover: rgb(29, 78, 216);
 }
 
-.dark-theme {
-  --bg-primary: #121212;
-  --bg-secondary: #1e1e1e;
-  --text-primary: #ffffff;
-  background: linear-gradient(45deg, var(--bg-primary), var(--bg-secondary));
-  color: var(--text-primary);
-}
-
+/* Base styles */
 body {
   min-height: 100vh;
+  background: linear-gradient(45deg, var(--light-bg), var(--light-paper));
+  color: var(--light-text);
   transition: all 0.3s ease;
 }
 
-.app-container {
-  min-height: 100vh;
-  background-size: 400% 400%;
-  animation: gradient 15s ease infinite;
+.dark body {
+  background: linear-gradient(45deg, var(--dark-bg), var(--dark-paper));
+  color: var(--dark-text);
 }
 
-@keyframes gradient {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-} 
+/* Component styles */
+.paper {
+  max-width: 28rem;
+  width: 100%;
+  padding: 2rem;
+  border-radius: 0.75rem;
+  background-color: var(--light-paper);
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+}
+
+.dark .paper {
+  background-color: var(--dark-paper);
+}
+
+.input-field .MuiOutlinedInput-root {
+  background-color: var(--light-input-bg);
+  color: var(--light-text);
+}
+
+.dark .input-field .MuiOutlinedInput-root {
+  background-color: var(--dark-input-bg);
+  color: var(--dark-text);
+}
+
+.input-field .MuiOutlinedInput-root fieldset {
+  border-color: var(--light-border);
+}
+
+.dark .input-field .MuiOutlinedInput-root fieldset {
+  border-color: var(--dark-border);
+}
+
+.input-field .MuiOutlinedInput-root:hover fieldset {
+  border-color: var(--light-border-hover);
+}
+
+.dark .input-field .MuiOutlinedInput-root:hover fieldset {
+  border-color: var(--dark-border-hover);
+}
+
+.input-field .MuiInputLabel-root {
+  color: var(--light-label);
+}
+
+.dark .input-field .MuiInputLabel-root {
+  color: var(--dark-label);
+}
+
+.icon {
+  color: var(--light-icon);
+}
+
+.dark .icon {
+  color: var(--dark-icon);
+}
+
+/* Button styles */
+.btn {
+  @apply w-full h-16 flex items-center justify-center gap-2 transition-all duration-200 rounded;
+}
+
+.btn-primary {
+  @apply bg-blue-500 hover:bg-blue-600 text-white shadow-md hover:shadow-lg;
+}
+
+.dark .btn-primary {
+  @apply bg-blue-600 hover:bg-blue-700;
+}
+
+.btn-secondary {
+  @apply bg-gray-500 hover:bg-gray-600 text-white shadow-md hover:shadow-lg;
+}
+
+.dark .btn-secondary {
+  @apply bg-gray-600 hover:bg-gray-700;
+}
+
+.theme-toggle {
+  @apply w-full h-16 border-2 border-current rounded flex items-center justify-center gap-2 transition-colors;
+}
+
+.theme-toggle:hover {
+  @apply bg-gray-100;
+}
+
+.dark .theme-toggle:hover {
+  @apply bg-gray-800;
+}
+
+/* Theme utility classes */
+.text-primary {
+  color: var(--light-primary);
+}
+
+.dark .text-primary {
+  color: var(--dark-primary);
+}
+
+.text-secondary {
+  color: var(--light-secondary);
+}
+
+.dark .text-secondary {
+  color: var(--dark-secondary);
+}
+
+.text-accent {
+  color: var(--light-accent);
+}
+
+.dark .text-accent {
+  color: var(--dark-accent);
+}
+
+.text-success {
+  color: var(--light-success);
+}
+
+.dark .text-success {
+  color: var(--dark-success);
+}
+
+.text-warning {
+  color: var(--light-warning);
+}
+
+.dark .text-warning {
+  color: var(--dark-warning);
+}
+
+.text-error {
+  color: var(--light-error);
+}
+
+.dark .text-error {
+  color: var(--dark-error);
+}
+
+.text-info {
+  color: var(--light-info);
+}
+
+.dark .text-info {
+  color: var(--dark-info);
+}
+
+.bg-primary {
+  background-color: var(--light-primary);
+}
+
+.bg-dark-primary {
+  background-color: var(--dark-primary);
+}
+
+.bg-secondary {
+  background-color: var(--light-secondary);
+}
+
+.dark-bg-secondary {
+  background-color: var(--dark-secondary);
+}
+
+.bg-accent {
+  background-color: var(--light-accent);
+}
+
+.dark .bg-accent {
+  background-color: var(--dark-accent);
+}
+
+.bg-success {
+  background-color: var(--light-success);
+}
+
+.dark .bg-success {
+  background-color: var(--dark-success);
+}
+
+.bg-warning {
+  background-color: var(--light-warning);
+}
+
+.dark .bg-warning {
+  background-color: var(--dark-warning);
+}
+
+.bg-error {
+  background-color: var(--light-error);
+}
+
+.dark .bg-error {
+  background-color: var(--dark-error);
+}
+
+.bg-info {
+  background-color: var(--light-info);
+}
+
+.dark .bg-info {
+  background-color: var(--dark-info);
+}
+
+/* Remove MUI button hover styles */
+.css-h7cjts-MuiButtonBase-root-MuiIconButton-root:hover,
+.css-189ec4b-MuiButtonBase-root-MuiIconButton-root:hover {
+  background-color: transparent !important;
+}
+

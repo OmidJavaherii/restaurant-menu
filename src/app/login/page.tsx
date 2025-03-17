@@ -1,77 +1,76 @@
-// app/admin/login/page.tsx
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
-import Head from "next/head";
-import Link from "next/link";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useAuth } from "@/hooks/useAuth";
 import {
+  Lock as LockIcon,
+  Person as PersonIcon,
+  Visibility,
+  VisibilityOff,
+  Home as HomeIcon,
+} from "@mui/icons-material";
+import {
+  CircularProgress,
+  IconButton,
+  InputAdornment,
   TextField,
-  Button,
-  Card,
-  CardContent,
+  Paper,
   Typography,
   Box,
-  Container,
+  Button,
   Alert,
-  CircularProgress,
-  Stack,
-  InputAdornment,
-  IconButton,
 } from "@mui/material";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import HomeIcon from "@mui/icons-material/Home";
-import VisibilityIcon from "@mui/icons-material/Visibility";
-import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-import { useAuth } from "@/hooks/useAuth";
+import { useForm, Controller } from "react-hook-form";
+import { toast } from "react-hot-toast";
+import { useThemeStore } from "@/store/themeStore";
+import Head from "next/head";
 
-type LoginInputs = {
+interface LoginFormData {
   idCard: string;
   password: string;
-};
+}
 
 export default function LoginPage() {
   const router = useRouter();
-  const { login, isAuthenticated } = useAuth();
+  const { login } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
-  const [loginError, setLoginError] = useState<string | null>(null);
-  
+  const isDarkMode = useThemeStore((state) => state.isDarkMode);
+
   const {
-    register,
+    control,
     handleSubmit,
-    formState: { errors },
-  } = useForm<LoginInputs>({
+    formState: { errors, isSubmitting },
+  } = useForm<LoginFormData>({
     defaultValues: {
       idCard: "",
       password: "",
     },
+    mode: "onChange",
   });
 
-  // Check if user is already logged in
-  useEffect(() => {
-    if (isAuthenticated) {
-      router.push("/dashboard");
-    }
-  }, [isAuthenticated, router]);
-
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
-  };
-
-  const onSubmit: SubmitHandler<LoginInputs> = async (data) => {
-    setLoginError(null);
-    
+  const onSubmit = async (data: LoginFormData) => {
     try {
-      await login.mutateAsync({ 
-        idCard: data.idCard, 
-        password: data.password 
+      if (!data.idCard || !data.password) {
+        toast.error("Please fill in all fields");
+        return;
+      }
+
+      const result = await login.mutateAsync({
+        idCard: data.idCard,
+        password: data.password,
       });
-      router.push("/dashboard");
-    } catch (err: any) {
-      // Handle error without causing Next.js turbopack errors
-      setLoginError(err.message || "Invalid credentials. Please try again.");
-      console.error("Login error:", err);
+
+      if (result && typeof result === "object") {
+        toast.success("Login successful!");
+        router.push("/dashboard");
+        router.refresh();
+      } else {
+        toast.error("Invalid credentials");
+      }
+    } catch (error) {
+      console.error("Login error:", error);
+      toast.error("Invalid credentials");
     }
   };
 
@@ -80,113 +79,139 @@ export default function LoginPage() {
       <Head>
         <title>Admin Login</title>
       </Head>
-      <Container component="main" maxWidth="xs">
-        <Box className="flex flex-col items-center justify-center min-h-screen">
-          <Card className="w-full shadow-lg">
-            <CardContent className="p-6">
-              <Box className="flex flex-col items-center mb-6">
-                <div className="w-12 h-12 rounded-full bg-blue-500 flex items-center justify-center mb-4">
-                  <LockOutlinedIcon className="text-white" />
-                </div>
-                <Typography component="h1" variant="h5" className="font-bold">
-                  Admin Login
-                </Typography>
-              </Box>
+      <div className={`min-h-screen flex items-center justify-center p-4 ${isDarkMode ? 'dark' : ''}`}>
+        <Paper elevation={3} className="paper">
+          <Box className="text-center mb-8">
+            <Typography
+              variant="h4"
+              component="h1"
+              className="font-bold"
+            >
+              Admin Login
+            </Typography>
+          </Box>
 
-              {loginError && (
-                <Alert severity="error" className="mb-4">
-                  {loginError}
-                </Alert>
-              )}
-
-              <Box component="form" onSubmit={handleSubmit(onSubmit)} className="mt-2">
+          <form 
+            onSubmit={handleSubmit(onSubmit)} 
+            className="space-y-6 flex flex-col gap-4" 
+            autoComplete="off"
+            name="login-form"
+          >
+            <Controller
+              name="idCard"
+              control={control}
+              rules={{
+                required: "ID Card is required",
+                pattern: {
+                  value: /^AD[A-Za-z0-9]+$/,
+                  message: "ID Card must start with 'AD' followed by letters or numbers",
+                },
+              }}
+              render={({ field }) => (
                 <TextField
-                  margin="normal"
-                  required
+                  {...field}
                   fullWidth
-                  id="idCard"
                   label="ID Card"
-                  autoComplete="idCard"
-                  autoFocus
+                  variant="outlined"
                   error={!!errors.idCard}
                   helperText={errors.idCard?.message}
-                  {...register("idCard", { 
-                    required: "ID Card is required",
-                    pattern: {
-                      value: /^AD/,
-                      message: "ID Card must start with AD"
+                  value={field.value.startsWith("AD") ? field.value : `AD${field.value}`}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    if (value.startsWith("AD")) {
+                      field.onChange(value);
+                    } else {
+                      field.onChange(`AD${value}`);
                     }
-                  })}
-                  variant="outlined"
-                  className="mb-4"
+                  }}
+                  className="input-field"
+                  autoComplete="off"
+                  name="idCard"
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <PersonIcon className="icon" />
+                      </InputAdornment>
+                    ),
+                  }}
                 />
+              )}
+            />
+
+            <Controller
+              name="password"
+              control={control}
+              rules={{
+                required: "Password is required",
+                minLength: {
+                  value: 6,
+                  message: "Password must be at least 6 characters",
+                },
+                maxLength: {
+                  value: 50,
+                  message: "Password is too long",
+                },
+              }}
+              render={({ field }) => (
                 <TextField
-                  margin="normal"
-                  required
+                  {...field}
                   fullWidth
                   label="Password"
                   type={showPassword ? "text" : "password"}
-                  id="password"
-                  autoComplete="current-password"
+                  variant="outlined"
                   error={!!errors.password}
                   helperText={errors.password?.message}
+                  className="input-field"
+                  autoComplete="new-password"
+                  name="password"
                   InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <LockIcon className="icon" />
+                      </InputAdornment>
+                    ),
                     endAdornment: (
                       <InputAdornment position="end">
                         <IconButton
-                          aria-label="toggle password visibility"
-                          onClick={togglePasswordVisibility}
+                          onClick={() => setShowPassword(!showPassword)}
                           edge="end"
+                          className="icon"
                         >
-                          {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
+                          {showPassword ? <VisibilityOff /> : <Visibility />}
                         </IconButton>
                       </InputAdornment>
                     ),
                   }}
-                  {...register("password", { 
-                    required: "Password is required",
-                    minLength: {
-                      value: 6,
-                      message: "Password must be at least 6 characters"
-                    }
-                  })}
-                  variant="outlined"
-                  className="mb-6"
                 />
-                <Stack spacing={2}>
-                  <Button
-                    type="submit"
-                    fullWidth
-                    variant="contained"
-                    color="primary"
-                    size="large"
-                    disabled={login.isPending}
-                    className="py-3"
-                  >
-                    {login.isPending ? (
-                      <CircularProgress size={24} color="inherit" />
-                    ) : (
-                      "Login"
-                    )}
-                  </Button>
-                  <Link href="/" passHref>
-                    <Button
-                      fullWidth
-                      variant="outlined"
-                      color="primary"
-                      size="large"
-                      startIcon={<HomeIcon />}
-                      className="py-3"
-                    >
-                      Back to Home
-                    </Button>
-                  </Link>
-                </Stack>
-              </Box>
-            </CardContent>
-          </Card>
-        </Box>
-      </Container>
+              )}
+            />
+
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              disabled={isSubmitting}
+              className="btn-primary py-3"
+            >
+              {isSubmitting ? (
+                <CircularProgress size={24} className="text-white" />
+              ) : (
+                "Sign In"
+              )}
+            </Button>
+
+            <Button
+              variant="outlined"
+              fullWidth
+              startIcon={<HomeIcon />}
+              onClick={() => router.push("/")}
+              className={`mt-2 ${isDarkMode ? 'text-white border-white hover:bg-white/10' : 'text-gray-700 border-gray-700 hover:bg-gray-100'}`}
+            >
+              Return to Home
+            </Button>
+          </form>
+        </Paper>
+      </div>
     </>
   );
 }

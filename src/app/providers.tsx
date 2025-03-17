@@ -1,64 +1,65 @@
 'use client';
 
-import { ThemeProvider } from '@mui/material';
-import { createTheme } from '@mui/material/styles';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ThemeProvider as MuiThemeProvider, createTheme } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
 import { useThemeStore } from '@/store/themeStore';
-import { useEffect } from 'react';
-import '@/styles/globals.css';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ApolloProvider } from '@apollo/client';
+import { client } from '@/lib/apollo-client';
 
 const queryClient = new QueryClient();
 
+const lightTheme = createTheme({
+  palette: {
+    mode: 'light',
+    primary: {
+      main: '#3B82F6',
+      light: '#60A5FA',
+      dark: '#2563EB',
+    },
+    secondary: {
+      main: '#6B7280',
+      light: '#9CA3AF',
+      dark: '#4B5563',
+    },
+    background: {
+      default: '#F9FAFB',
+      paper: '#FFFFFF',
+    },
+  },
+});
+
+const darkTheme = createTheme({
+  palette: {
+    mode: 'dark',
+    primary: {
+      main: '#2563EB',
+      light: '#3B82F6',
+      dark: '#1D4ED8',
+    },
+    secondary: {
+      main: '#9CA3AF',
+      light: '#D1D5DB',
+      dark: '#6B7280',
+    },
+    background: {
+      default: '#111827',
+      paper: '#1A2E49',
+    },
+  },
+});
+
 export function Providers({ children }: { children: React.ReactNode }) {
-  const isDarkMode = useThemeStore((state: { isDarkMode: boolean }) => state.isDarkMode);
-
-  useEffect(() => {
-    document.body.className = isDarkMode ? 'dark-theme' : 'light-theme';
-  }, [isDarkMode]);
-
-  const theme = createTheme({
-    palette: {
-      mode: isDarkMode ? 'dark' : 'light',
-      primary: {
-        main: isDarkMode ? '#90caf9' : '#2196f3', // Lighter blue in dark mode
-      },
-      secondary: {
-        main: isDarkMode ? '#f48fb1' : '#f50057', // Lighter pink in dark mode
-      },
-      background: {
-        default: isDarkMode ? '#121212' : '#ffffff',
-        paper: isDarkMode ? '#1e1e1e' : '#f0f2f5',
-      },
-      text: {
-        primary: isDarkMode ? '#ffffff' : '#1a1a1a',
-      }
-    },
-    components: {
-      MuiButton: {
-        styleOverrides: {
-          root: {
-            textTransform: 'none',
-            borderRadius: 8,
-            color: isDarkMode ? '#ffffff' : '#1a1a1a',
-            '&.MuiButton-contained': {
-              backgroundColor: isDarkMode ? '#90caf9' : '#2196f3',
-              '&:hover': {
-                backgroundColor: isDarkMode ? '#42a5f5' : '#1976d2'
-              }
-            }
-          },
-        },
-      },
-    },
-  });
+  const { isDarkMode } = useThemeStore();
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <ThemeProvider theme={theme}>
-        <div className="app-container">
+    <ApolloProvider client={client}>
+      <QueryClientProvider client={queryClient}>
+        <MuiThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
+          <CssBaseline />
           {children}
-        </div>
-      </ThemeProvider>
-    </QueryClientProvider>
+        </MuiThemeProvider>
+      </QueryClientProvider>
+    </ApolloProvider>
   );
 } 

@@ -1,16 +1,19 @@
 import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 
-type State = {
+interface ThemeState {
   isDarkMode: boolean;
-};
-
-type Actions = {
   toggleTheme: () => void;
-};
+}
 
-type ThemeStore = State & Actions;
-
-export const useThemeStore = create<ThemeStore>((set) => ({
-  isDarkMode: false,
-  toggleTheme: () => set((state) => ({ isDarkMode: !state.isDarkMode })),
-})); 
+export const useThemeStore = create<ThemeState>()(
+  persist(
+    (set) => ({
+      isDarkMode: false,
+      toggleTheme: () => set((state) => ({ isDarkMode: !state.isDarkMode })),
+    }),
+    {
+      name: 'theme-storage',
+    }
+  )
+); 

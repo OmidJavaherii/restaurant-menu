@@ -13,6 +13,8 @@ const QUERIES = {
         description
         price
         category
+        stock
+        discount
       }
     }
   `,
@@ -25,6 +27,8 @@ const QUERIES = {
         description
         price
         category
+        stock
+        discount
       }
     }
   `,
@@ -40,6 +44,8 @@ const MUTATIONS = {
         description
         price
         category
+        stock
+        discount
       }
     }
   `,
@@ -52,6 +58,8 @@ const MUTATIONS = {
         description
         price
         category
+        stock
+        discount
       }
     }
   `,
