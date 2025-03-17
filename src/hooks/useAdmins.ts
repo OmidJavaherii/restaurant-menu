@@ -72,9 +72,11 @@ export function useAdmins() {
   const queryClient = useQueryClient();
 
   // Query for getting all admins
-  const { data: admins, isLoading } = useQuery({
+  const { data: admins = [], isLoading, error } = useQuery({
     queryKey: ['admins'],
     queryFn: () => fetchGraphQL(QUERIES.GET_ADMINS).then(data => data.admins),
+    staleTime: 5000, // Consider data fresh for 5 seconds
+    retry: 2, // Retry failed requests twice
   });
 
   // Query for getting a single admin
@@ -82,6 +84,8 @@ export function useAdmins() {
     return useQuery({
       queryKey: ['admin', id],
       queryFn: () => fetchGraphQL(QUERIES.GET_ADMIN, { id }).then(data => data.admin),
+      staleTime: 5000,
+      retry: 2,
     });
   };
 
@@ -115,6 +119,7 @@ export function useAdmins() {
   return {
     admins,
     isLoading,
+    error,
     getAdmin,
     addAdmin,
     updateAdmin,

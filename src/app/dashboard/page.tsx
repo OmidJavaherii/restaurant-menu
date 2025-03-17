@@ -63,6 +63,7 @@ import { toast } from "react-hot-toast";
 import { useOrders } from "@/hooks/useOrders";
 import { QRCodeSVG } from "qrcode.react";
 import { useThemeStore } from "@/store/themeStore";
+import { useQueryClient } from '@tanstack/react-query';
 
 // Define interfaces
 interface Product {
@@ -145,6 +146,7 @@ export default function DashboardPage() {
     addAdmin,
     updateAdmin,
     deleteAdmin,
+    error,
   } = useAdmins();
   const { orders, isLoading: ordersLoading, updateOrderStatus } = useOrders();
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -197,6 +199,8 @@ export default function DashboardPage() {
   const [orderDetailsModalOpen, setOrderDetailsModalOpen] = useState(false);
   const [currentOrder, setCurrentOrder] = useState<Order | null>(null);
 
+  const queryClient = useQueryClient();
+
   useEffect(() => {
     setMounted(true);
   }, []);
@@ -215,6 +219,24 @@ export default function DashboardPage() {
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
     setTabValue(newValue);
+    // Refetch data based on the selected tab
+    switch (newValue) {
+      case 0: // Dashboard tab
+        // Refetch all data
+        queryClient.invalidateQueries({ queryKey: ['products'] });
+        queryClient.invalidateQueries({ queryKey: ['admins'] });
+        queryClient.invalidateQueries({ queryKey: ['orders'] });
+        break;
+      case 1: // Products tab
+        queryClient.invalidateQueries({ queryKey: ['products'] });
+        break;
+      case 2: // Admins tab
+        queryClient.invalidateQueries({ queryKey: ['admins'] });
+        break;
+      case 3: // Orders tab
+        queryClient.invalidateQueries({ queryKey: ['orders'] });
+        break;
+    }
   };
 
   const toggleDrawer = () => {
@@ -685,13 +707,31 @@ export default function DashboardPage() {
                 </Typography>
               </Paper>
 
-              <Paper className="p-6 shadow-md">
-                <Typography variant="h6" className="mb-2">
-                  Total Admins
-                </Typography>
-                <Typography variant="h3" className="font-bold text-green-600">
-                  {admins.length}
-                </Typography>
+              <Paper
+                elevation={3}
+                className={`p-6 ${
+                  isDarkMode ? "bg-gray-800" : "bg-white"
+                }`}
+              >
+                <Box className="flex items-center justify-between mb-4">
+                  <Typography variant="h6" className={isDarkMode ? "text-white" : ""}>
+                    Total Admins
+                  </Typography>
+                  <PeopleIcon className={isDarkMode ? "text-white" : "text-gray-600"} />
+                </Box>
+                {adminsLoading ? (
+                  <Box className="flex justify-center items-center h-16">
+                    <CircularProgress size={24} />
+                  </Box>
+                ) : error ? (
+                  <Typography variant="h3" className="font-bold text-red-600">
+                    Error
+                  </Typography>
+                ) : (
+                  <Typography variant="h3" className="font-bold text-green-600">
+                    {admins.length}
+                  </Typography>
+                )}
               </Paper>
 
               <Paper className="p-6 shadow-md">

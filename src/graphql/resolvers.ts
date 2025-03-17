@@ -1,41 +1,11 @@
 import db from '../data/db.json';
 import fs from 'fs';
 import path from 'path';
+import { OrderInput, OrderItemInput, Order } from '../types';
 
 let products = [...db.products];
 let admins = [...db.admins];
 let orders = db.orders || [];
-
-// Add interface at the top of the file
-interface OrderItem {
-  productId: string;
-  title: string;
-  price: number;
-  quantity: number;
-  discount?: number;
-}
-
-interface Order {
-  id: string;
-  items: OrderItem[];
-  totalAmount: number;
-  status: string;
-  createdAt: string;
-  customerName?: string;
-  customerPhone?: string;
-  placeNumber?: string;
-  description?: string;
-}
-
-interface OrderInput {
-  id?: string;
-  items: OrderItem[];
-  totalAmount: number;
-  customerName?: string;
-  customerPhone?: string;
-  placeNumber?: string;
-  description?: string;
-}
 
 // Function to save data back to db.json
 const saveData = () => {
@@ -145,34 +115,24 @@ export const resolvers = {
       return true;
     },
     
-    createOrder: (_: any, { input }: { input: OrderInput }) => {
-      // Check stock availability for all items
-      for (const item of input.items) {
-        const product = products.find(p => p.id.toString() === item.productId);
-        if (!product) throw new Error(`Product ${item.productId} not found`);
-        if (product.stock < item.quantity) {
-          throw new Error(`Not enough stock for ${product.title}`);
-        }
-      }
-
-      // Update stock for all items
-      input.items.forEach((item: OrderItem) => {
-        const productIndex = products.findIndex(p => p.id.toString() === item.productId);
-        if (productIndex !== -1) {
-          products[productIndex].stock -= item.quantity;
-        }
-      });
-
+    createOrder: (_: unknown, { input }: { input: OrderInput }) => {
       const newOrder = {
         id: input.id || `ORDER-${Date.now()}`,
-        items: input.items,
+        items: input.items.map(item => ({
+          productId: item.productId,
+          title: item.title,
+          price: item.price,
+          originalPrice: item.price,
+          discount: item.discount || 0,
+          quantity: item.quantity
+        })),
         totalAmount: input.totalAmount,
-        status: 'pending',
-        createdAt: new Date().toISOString(),
-        customerName: input.customerName,
-        customerPhone: input.customerPhone,
-        placeNumber: input.placeNumber,
-        description: input.description,
+        status: input.status || 'pending',
+        createdAt: input.createdAt || new Date().toISOString(),
+        customerName: input.customerName || '',
+        customerPhone: input.customerPhone || '',
+        placeNumber: input.placeNumber || '',
+        description: input.description || ''
       };
       orders.push(newOrder);
       saveData();

@@ -67,6 +67,8 @@ export const typeDefs = `#graphql
     id: String
     items: [OrderItemInput!]!
     totalAmount: Float!
+    status: String
+    createdAt: String
     customerName: String
     customerPhone: String
     placeNumber: String
