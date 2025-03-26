@@ -209,6 +209,12 @@ export default function LoginPage() {
             >
               Return to Home
             </Button>
+
+            <Box className="mt-4 text-center text-sm text-gray-500">
+              <Typography variant="body2">
+                Hint: Admin ID: AD123456 | Password: admin123
+              </Typography>
+            </Box>
           </form>
         </Paper>
       </div>

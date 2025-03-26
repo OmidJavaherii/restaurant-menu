@@ -1,43 +1,136 @@
+# Restaurant Menu
 
-## Admin ID: AD123456
-## Password: admin123
+## 🔐 Admin Login Credentials
 
-have fun and feedback please...
+For accessing the admin panel, use the following credentials:
 
-#It's fullstack poject using Next.js, TypeScript, Graph QL, React Query, React Hook Form, Zustand, Uuid, MUI, Tailwind.#
-##
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
-## Getting Started
-
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+```
+Admin ID: AD123456
+Password: admin123
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+> ⚠️ **Note**: These are demo credentials. In a production environment, please change these credentials immediately after deployment.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+A modern, responsive restaurant menu website built with Next.js 14, featuring a beautiful UI, smooth animations, and PWA capabilities.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🌟 Features
 
-## Learn More
+- **Modern Design**
+  - Clean and elegant layout
+  - Beautiful typography with Geist font
+  - Smooth animations and transitions
+  - Responsive design for all devices
 
-To learn more about Next.js, take a look at the following resources:
+- **User Experience**
+  - Easy navigation
+  - Smooth scroll animations
+  - Dark mode support
+  - Custom 404 page
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **Technical Features**
+  - Built with Next.js 14
+  - TypeScript for type safety
+  - Tailwind CSS, MUI for styling
+  - PWA support with offline capabilities
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 🚀 Getting Started
 
-## Deploy on Vercel
+### Prerequisites
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- Node.js 18.17 or later
+- npm or yarn package manager
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Installation
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/omidjavaherii/restaurant-menu.git
+   ```
+
+2. Navigate to the project directory:
+   ```bash
+   cd restaurant-menu
+   ```
+
+3. Install dependencies:
+   ```bash
+   npm install
+   # or
+   yarn install
+   ```
+
+4. Start the development server:
+   ```bash
+   npm run dev
+   # or
+   yarn dev
+   ```
+
+5. Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+## 🛠️ Built With
+
+- [Next.js](https://nextjs.org/) - React framework for production
+- [TypeScript](https://www.typescriptlang.org/) - Type safety
+- [Tailwind CSS](https://tailwindcss.com/) - Utility-first CSS framework
+- [Framer Motion](https://www.framer.com/motion/) - Animation library
+- [React Icons](https://react-icons.github.io/react-icons/) - Icon library
+
+## 📱 PWA Installation
+
+### Desktop
+- Click the install button in the browser's address bar
+- Or use the "Install" button in the app
+
+### Mobile
+- iOS: Use the "Add to Home Screen" option in the share menu
+- Android: Click "Add to Home Screen" in the browser menu
+
+## 🎨 Customization
+
+### Colors
+The theme colors can be customized in `tailwind.config.ts`:
+```typescript
+colors: {
+  primary: {
+    DEFAULT: '#046D8B',
+    dark: '#035A73',
+  },
+  // ... other colors
+}
+```
+
+### Content
+- Update menu items in `src/data/menu.ts`
+- Modify categories in `src/data/categories.ts`
+- Edit contact information in `src/data/contact.ts`
+
+## 📦 Project Structure
+
+```
+restaurant-menu/
+├── public/
+│   ├── icons/          # PWA icons
+│   └── images/         # Static images
+├── src/
+│   ├── app/           # Next.js app router
+│   ├── components/    # React components
+│   │   ├── layout/    # Layout components
+│   │   └── ui/        # UI components
+│   ├── data/         # Content data
+│   ├── hooks/        # Custom hooks
+│   └── styles/       # Global styles
+└── package.json
+```
+
+## 🔧 Available Scripts
+
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run start` - Start production server
+- `npm run lint` - Run ESLint
+- `npm run format` - Format code with Prettier
+
+## 🤝 Contact
+
+Project Link: [https://github.com/omidjavaherii/restaurant-menu](https://github.com/omidjavaherii/restaurant-menu)
