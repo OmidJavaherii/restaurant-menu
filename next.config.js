@@ -20,9 +20,7 @@ const nextConfig = {
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
   },
   experimental: {
-    serverActions: {
-      allowedOrigins: ['restaurant-menu-seven-xi.vercel.app', 'localhost:3000']
-    },
+    serverActions: true,
     serverComponentsExternalPackages: ['mongodb'],
   },
   webpack: (config) => {
@@ -40,7 +38,7 @@ const nextConfig = {
         headers: [
           {
             key: 'Access-Control-Allow-Origin',
-            value: 'https://restaurant-menu-seven-xi.vercel.app',
+            value: '*',
           },
           {
             key: 'Access-Control-Allow-Methods',
