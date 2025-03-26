@@ -22,8 +22,6 @@ const nextConfig = {
   experimental: {
     serverActions: true,
     serverComponentsExternalPackages: ['mongodb'],
-    optimizeCss: true,
-    scrollRestoration: true,
   },
   webpack: (config) => {
     config.module.rules.push({
