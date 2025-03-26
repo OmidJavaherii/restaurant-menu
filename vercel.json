@@ -7,8 +7,8 @@
   "regions": ["sin1"],
   "env": {
     "MONGODB_URI": "mongodb+srv://omid138089:XnekMAqCrpfvKqCS@cluster0.evgd7xi.mongodb.net/restaurant-menu?retryWrites=true&w=majority&appName=Cluster0&ssl=true&tls=true&tlsAllowInvalidCertificates=true&tlsAllowInvalidHostnames=true",
-    "NEXTAUTH_URL": "https://restaurant-menu-one-chi.vercel.app/",
-    "NEXTAUTH_SECRET": "your-secret-key-here"
+    "NEXTAUTH_URL": "https://restaurant-menu-one-chi.vercel.app",
+    "NEXTAUTH_SECRET": "8K9x#mP2$vL5nQ7@jR4tY6wU3hB1cF9dE"
   },
   "builds": [
     {
@@ -19,11 +19,19 @@
   "routes": [
     {
       "src": "/api/(.*)",
-      "dest": "/api/$1"
+      "dest": "/api/$1",
+      "headers": {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET,OPTIONS,PATCH,DELETE,POST,PUT",
+        "Access-Control-Allow-Headers": "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, Authorization"
+      }
     },
     {
       "src": "/(.*)",
-      "dest": "/$1"
+      "dest": "/$1",
+      "headers": {
+        "Cache-Control": "no-store, max-age=0"
+      }
     }
   ]
 } 
