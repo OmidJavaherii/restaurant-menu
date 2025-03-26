@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, Fragment } from 'react';
+import { useState, Fragment, memo } from 'react';
 import { 
   Container, 
   Typography, 
@@ -36,6 +36,7 @@ import {
   TableRow,
   TableCell,
   TextField,
+  Pagination,
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
@@ -55,8 +56,147 @@ const getCategories = (products: any[] = []) => {
   return ['all', ...new Set(categories)];
 };
 
+// Memoized ProductCard component
+const ProductCard = memo(({ 
+  product, 
+  onAddToCart, 
+  onIncreaseQuantity, 
+  onDecreaseQuantity, 
+  onRemoveItem,
+  cartItems,
+  canIncreaseQuantity 
+}: any) => {
+  const calculateDiscountedPrice = (price: number, discount: number | undefined) => {
+    if (!discount) return price;
+    return price * (1 - discount / 100);
+  };
+
+  return (
+    <Card 
+      sx={{ 
+        height: '100%', 
+        display: 'flex', 
+        flexDirection: 'column',
+        transition: 'transform 0.2s',
+        '&:hover': {
+          transform: product.stock > 0 ? 'scale(1.02)' : 'none',
+        },
+        opacity: product.stock > 0 ? 1 : 0.7,
+        position: 'relative',
+      }}
+    >
+      {product.stock <= 0 && (
+        <Box
+          sx={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            bgcolor: 'error.main',
+            color: 'white',
+            py: 1,
+            px: 3,
+            borderRadius: 1,
+            zIndex: 1,
+            width: '200%',
+            textAlign: 'center',
+            transform: 'translate(-50%, -50%) rotate(-45deg)',
+          }}
+        >
+          <Typography variant="h6">
+            Sold Out
+          </Typography>
+        </Box>
+      )}
+      <CardMedia
+        component="img"
+        className='w-full h-54 object-cover'
+        image={product.img}
+        alt={product.title}
+        loading="lazy"
+        sx={{ opacity: product.stock > 0 ? 1 : 0.5 }}
+      />
+      <CardContent sx={{ flexGrow: 1 }}>
+        <Typography gutterBottom variant="h5" component="h2">
+          {product.title}
+        </Typography>
+        <Typography variant="body2" color="text.secondary" paragraph>
+          {product.description}
+        </Typography>
+        <Box>
+          {(product.discount ?? 0) > 0 ? (
+            <>
+              <Typography variant="h6" color="primary" component="span">
+                ${calculateDiscountedPrice(product.price, product.discount).toFixed(2)}
+              </Typography>
+              <Typography
+                component="span"
+                color="error"
+                sx={{ ml: 1, textDecoration: 'line-through' }}
+              >
+                ${product.price.toFixed(2)}
+              </Typography>
+              <Typography
+                variant="body2"
+                color="success.main"
+                sx={{ mt: 0.5 }}
+              >
+                {product.discount}% OFF
+              </Typography>
+            </>
+          ) : (
+            <Typography variant="h6" color="primary">
+              ${product.price.toFixed(2)}
+            </Typography>
+          )}
+          <Typography variant="body2" color={product.stock <= 5 ? "error.main" : "text.secondary"}>
+            {product.stock > 0 ? `${product.stock} in stock` : 'Out of stock'}
+          </Typography>
+        </Box>
+      </CardContent>
+      <CardActions>
+        {cartItems.find((item: any) => item.id === product.id) ? (
+          <Box sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
+            <IconButton 
+              size="small" 
+              color="primary"
+              onClick={() => onDecreaseQuantity(product.id)}
+            >
+              <RemoveIcon />
+            </IconButton>
+            <Typography sx={{ mx: 1 }}>
+              {cartItems.find((item: any) => item.id === product.id)?.quantity || 0}
+            </Typography>
+            <IconButton 
+              size="small" 
+              color="primary"
+              onClick={() => onIncreaseQuantity(product.id)}
+              disabled={!canIncreaseQuantity(product.id)}
+            >
+              <AddIcon />
+            </IconButton>
+          </Box>
+        ) : (
+          <Button 
+            size="small" 
+            color="primary"
+            onClick={() => onAddToCart(product)}
+            fullWidth
+            disabled={product.stock <= 0}
+          >
+            {product.stock > 0 ? 'Add to Cart' : 'Sold Out'}
+          </Button>
+        )}
+      </CardActions>
+    </Card>
+  );
+});
+
+ProductCard.displayName = 'ProductCard';
+
 export default function Menu() {
   const [selectedCategory, setSelectedCategory] = useState('all');
+  const [page, setPage] = useState(1);
+  const [rowsPerPage] = useState(12);
   const { products, isLoading } = useProducts();
   const { createOrder } = useOrders();
   const queryClient = useQueryClient();
@@ -90,6 +230,11 @@ export default function Menu() {
 
   const filteredProducts = products?.filter((product: { category: string; }) => 
     selectedCategory === 'all' || product.category === selectedCategory
+  );
+
+  const paginatedProducts = filteredProducts?.slice(
+    (page - 1) * rowsPerPage,
+    page * rowsPerPage
   );
 
   const handleCategoryChange = (_: React.SyntheticEvent, newValue: string) => {
@@ -215,6 +360,10 @@ export default function Menu() {
     return price * (1 - discount / 100);
   };
 
+  const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
+    setPage(value);
+  };
+
   return (
     <Container maxWidth="lg" sx={{ py: 8 }}>
       {/* Header */}
@@ -272,127 +421,36 @@ export default function Menu() {
           ))
         ) : (
           // Actual products
-          filteredProducts?.map((product: any) => (
+          paginatedProducts?.map((product: any) => (
             <Grid item xs={12} sm={6} md={4} lg={3} key={product.id}>
-              <Card 
-                sx={{ 
-                  height: '100%', 
-                  display: 'flex', 
-                  flexDirection: 'column',
-                  transition: 'transform 0.2s',
-                  '&:hover': {
-                    transform: product.stock > 0 ? 'scale(1.02)' : 'none',
-                  },
-                  opacity: product.stock > 0 ? 1 : 0.7,
-                  position: 'relative',
-                }}
-              >
-                {product.stock <= 0 && (
-                  <Box
-                    sx={{
-                      position: 'absolute',
-                      top: '50%',
-                      left: '50%',
-                      bgcolor: 'error.main',
-                      color: 'white',
-                      py: 1,
-                      px: 3,
-                      borderRadius: 1,
-                      zIndex: 1,
-                      width: '200%',
-                      textAlign: 'center',
-                      transform: 'translate(-50%, -50%) rotate(-45deg)',
-                    }}
-                  >
-                    <Typography variant="h6">
-                      Sold Out
-                    </Typography>
-                  </Box>
-                )}
-                <CardMedia
-                  component="img"
-                  className='w-full h-54 object-cover'
-                  image={product.img}
-                  alt={product.title}
-                  sx={{ opacity: product.stock > 0 ? 1 : 0.5 }}
-                />
-                <CardContent sx={{ flexGrow: 1 }}>
-                  <Typography gutterBottom variant="h5" component="h2">
-                    {product.title}
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary" paragraph>
-                    {product.description}
-                  </Typography>
-                  <Box>
-                    {(product.discount ?? 0) > 0 ? (
-                      <>
-                        <Typography variant="h6" color="primary" component="span">
-                          ${calculateDiscountedPrice(product.price, product.discount).toFixed(2)}
-                        </Typography>
-                        <Typography
-                          component="span"
-                          color="error"
-                          sx={{ ml: 1, textDecoration: 'line-through' }}
-                        >
-                          ${product.price.toFixed(2)}
-                        </Typography>
-                        <Typography
-                          variant="body2"
-                          color="success.main"
-                          sx={{ mt: 0.5 }}
-                        >
-                          {product.discount}% OFF
-                        </Typography>
-                      </>
-                    ) : (
-                      <Typography variant="h6" color="primary">
-                        ${product.price.toFixed(2)}
-                      </Typography>
-                    )}
-                    <Typography variant="body2" color={product.stock <= 5 ? "error.main" : "text.secondary"}>
-                      {product.stock > 0 ? `${product.stock} in stock` : 'Out of stock'}
-                    </Typography>
-                  </Box>
-                </CardContent>
-                <CardActions>
-                  {items.find(item => item.id === product.id) ? (
-                    <Box sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
-                      <IconButton 
-                        size="small" 
-                        color="primary"
-                        onClick={() => decreaseQuantity(product.id)}
-                      >
-                        <RemoveIcon />
-                      </IconButton>
-                      <Typography sx={{ mx: 1 }}>
-                        {items.find(item => item.id === product.id)?.quantity || 0}
-                      </Typography>
-                      <IconButton 
-                        size="small" 
-                        color="primary"
-                        onClick={() => increaseQuantity(product.id)}
-                        disabled={!canIncreaseQuantity(product.id)}
-                      >
-                        <AddIcon />
-                      </IconButton>
-                    </Box>
-                  ) : (
-                    <Button 
-                      size="small" 
-                      color="primary"
-                      onClick={() => handleAddToCart(product)}
-                      fullWidth
-                      disabled={product.stock <= 0}
-                    >
-                      {product.stock > 0 ? 'Add to Cart' : 'Sold Out'}
-                    </Button>
-                  )}
-                </CardActions>
-              </Card>
+              <ProductCard
+                product={product}
+                onAddToCart={handleAddToCart}
+                onIncreaseQuantity={increaseQuantity}
+                onDecreaseQuantity={decreaseQuantity}
+                onRemoveItem={removeItem}
+                cartItems={items}
+                canIncreaseQuantity={canIncreaseQuantity}
+              />
             </Grid>
           ))
         )}
       </Grid>
+      
+      {/* Pagination */}
+      {!isLoading && filteredProducts && filteredProducts.length > rowsPerPage && (
+        <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
+          <Pagination
+            count={Math.ceil((filteredProducts?.length || 0) / rowsPerPage)}
+            page={page}
+            onChange={handlePageChange}
+            color="primary"
+            size="large"
+            showFirstButton
+            showLastButton
+          />
+        </Box>
+      )}
       
       {/* Cart Drawer */}
       <Drawer
@@ -416,6 +474,9 @@ export default function Menu() {
                         alt={item.title}
                         width={40}
                         height={40}
+                        loading="lazy"
+                        placeholder="blur"
+                        blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlhZWiAAAAAAAABvogAAOPUAAAOQWFlaIAAAAAAAAGKZAAC3hQAAGNpYWVogAAAAAAAAJKAAAA+EAAC2z2Rlc2MAAAAAAAAAFklFQyBodHRwOi8vd3d3LmllYy5nZQAAAAAAAAAAAAAAAFklFQyBodHRwOi8vd3d3LmllYy5nZQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAWFlaIAAAAAAAAPbWAAEAAAAA0y1zZjMyAAAAAAABDEIAAAXe///zJgAAB5IAAP2R///7ov///aMAAAPcAADAbP/bAEMABQODBAIDBgYEBggFBwgJCQoLCw0MCw0ODQ0PEA0ODQ0PEA0ODQ0PEA0ODQ0PEA0ODQ0PEA0ODQ0PEA0ODQ0PEA3/2wBDAQoLCw0NDhwQEBw7KCIoOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozv/AABEIACgAKAMBIgACEQEDEQH/xAAfAAABBQEBAQEBAQAAAAAAAAAAAQIDBAUGBwgJCgv/xAC1EAACAQMDAgQDBQUEBAAAAX0BAgMABBEFEiExQQYTUWEHInEUMkEVoQgjQrHBFVLR8CQzYnKCCQoWFxgZGiUmJygpKjQ1Njc4OTpDREVGR0hJSlNUVVZXWFlaY2RlZmdoaWpzdHV2d3h5eoOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4eLj5OXm5+jp6vHy8/T19vf4+fr/xAAfAQADAQEBAQEBAQEBAAAAAAAAAQIDBAUGBwgJCgv/xAC1EQACAQMDAgQDBQUEBAAAAX0BAgMABBEFEiExQQYTUWEHInEUMkEVoQgjQrHBFVLR8CQzYnKCCQoWFxgZGiUmJygpKjQ1Njc4OTpDREVGR0hJSlNUVVZXWFlaY2RlZmdoaWpzdHV2d3h5eoOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4eLj5OXm5+jp6vHy8/T19vf4+fr/2gAMAwEAAhEDEQA/APn+iiigD//Z"
                       />
                     </Avatar>
                   </ListItemAvatar>
@@ -526,7 +587,11 @@ export default function Menu() {
         maxWidth="md"
         fullWidth
       >
-        <DialogTitle>Order Details</DialogTitle>
+        <DialogTitle>
+          <Typography component="div" variant="h6">
+            Order Details
+          </Typography>
+        </DialogTitle>
         <DialogContent>
           <Box sx={{ mb: 3 }}>
             <Typography variant="h6" gutterBottom>

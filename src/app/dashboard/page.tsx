@@ -1077,7 +1077,7 @@ export default function DashboardPage() {
           }}
         >
           <DialogTitle className="flex items-center justify-between p-4 border-b">
-            <Typography variant="h6">
+            <Typography component="div" variant="h6">
               {productModalMode === "add" ? "Add Product" : "Edit Product"}
             </Typography>
             <IconButton onClick={handleCloseProductModal} size="small">
@@ -1276,7 +1276,7 @@ export default function DashboardPage() {
           }}
         >
           <DialogTitle className="flex items-center justify-between p-4 border-b">
-            <Typography variant="h6">
+            <Typography component="div" variant="h6">
               {adminModalMode === "add" ? "Add Admin" : "Edit Admin"}
             </Typography>
             <IconButton onClick={handleCloseAdminModal} size="small">
@@ -1416,7 +1416,7 @@ export default function DashboardPage() {
         }}
       >
         <DialogTitle className="bg-white">
-          <Typography variant="h6" sx={{ color: "#000" }}>
+          <Typography component="div" variant="h6" sx={{ color: "#000" }}>
             Order Details
           </Typography>
         </DialogTitle>

@@ -1,90 +1,124 @@
-import {
-  getProducts,
-  getProduct,
-  addProduct,
-  updateProduct,
-  deleteProduct,
-  getAdmins,
-  getAdmin,
-  loginAdmin,
-  addAdmin,
-  updateAdmin,
-  deleteAdmin,
-  getOrders,
-  getOrder,
-  createOrder,
-  updateOrderStatus,
-} from '@/lib/db';
+import db from '../data/db.json';
+import fs from 'fs';
+import path from 'path';
+import { OrderInput, OrderItemInput, Order } from '../types';
+
+let products = [...db.products];
+let admins = [...db.admins];
+let orders = db.orders || [];
+
+// Function to save data back to db.json
+const saveData = () => {
+  const dbPath = path.join(process.cwd(), 'src/data/db.json');
+  const data = { products, admins, orders };
+  fs.writeFileSync(dbPath, JSON.stringify(data, null, 2));
+};
 
 export const resolvers = {
   Query: {
-    admins: () => getAdmins(),
-    admin: (_: any, { id }: { id: string }) => getAdmin(id),
+    admins: () => admins,
+    admin: (_: any, { id }: { id: string }) => 
+      admins.find(admin => admin.id === parseInt(id)),
     
-    products: () => getProducts(),
-    product: (_: any, { id }: { id: string }) => getProduct(id),
+    products: () => products,
+    product: (_: any, { id }: { id: string }) => 
+      products.find(product => product.id === parseInt(id)),
     
-    productsByCategory: async (_: any, { category }: { category: string }) => {
-      const products = await getProducts();
-      return products.filter(product => product.category === category);
-    },
+    productsByCategory: (_: any, { category }: { category: string }) =>
+      products.filter(product => product.category === category),
       
-    orders: () => getOrders(),
-    order: (_: any, { id }: { id: string }) => getOrder(id),
+    orders: () => orders,
+    order: (_: any, { id }: { id: string }) =>
+      orders.find(order => order.id === id),
   },
 
   Mutation: {
-    addProduct: async (_: any, { input }: { input: any }) => {
-      const result = await addProduct(input);
-      return { id: result.insertedId, ...input };
+    addProduct: (_: any, { input }: { input: any }) => {
+      const newProduct = {
+        id: products.length + 1,
+        ...input,
+      };
+      products.push(newProduct);
+      saveData();
+      return newProduct;
     },
 
-    updateProduct: async (_: any, { id, input }: { id: string; input: any }) => {
-      await updateProduct(id, input);
-      return { id, ...input };
+    updateProduct: (_: any, { id, input }: { id: string; input: any }) => {
+      const index = products.findIndex(product => product.id === parseInt(id));
+      if (index === -1) throw new Error('Product not found');
+
+      products[index] = {
+        ...products[index],
+        ...input,
+      };
+      saveData();
+      return products[index];
     },
 
-    deleteProduct: async (_: any, { id }: { id: string }) => {
-      const result = await deleteProduct(id);
-      return result.deletedCount > 0;
+    deleteProduct: (_: any, { id }: { id: string }) => {
+      const index = products.findIndex(product => product.id === parseInt(id));
+      if (index === -1) throw new Error('Product not found');
+
+      products = products.filter(product => product.id !== parseInt(id));
+      saveData();
+      return true;
     },
 
-    loginAdmin: async (_: any, { idCard, password }: { idCard: string; password: string }) => {
-      const admin = await loginAdmin(idCard, password);
+    loginAdmin: (_: any, { idCard, password }: { idCard: string; password: string }) => {
+      const admin = admins.find(
+        admin => admin.idCard === idCard && admin.password === password
+      );
       if (!admin) throw new Error('Invalid credentials');
       return admin;
     },
 
-    addAdmin: async (_: any, { input }: { input: any }) => {
+    addAdmin: (_: any, { input }: { input: any }) => {
       // Check if admin with same idCard already exists
-      const admins = await getAdmins();
       const existingAdmin = admins.find(admin => admin.idCard === input.idCard);
       if (existingAdmin) throw new Error('Admin with this ID Card already exists');
 
-      const result = await addAdmin(input);
-      return { id: result.insertedId, ...input };
+      const newAdmin = {
+        id: admins.length + 1,
+        ...input,
+      };
+      admins.push(newAdmin);
+      saveData();
+      return newAdmin;
     },
 
-    updateAdmin: async (_: any, { id, input }: { id: string; input: any }) => {
-      const admins = await getAdmins();
-      const existingAdmin = admins.find(admin => 
-        admin._id?.toString() !== id && admin.idCard === input.idCard
-      );
-      if (existingAdmin) throw new Error('Another admin with this ID Card already exists');
+    updateAdmin: (_: any, { id, input }: { id: string; input: any }) => {
+      const index = admins.findIndex(admin => admin.id === parseInt(id));
+      if (index === -1) throw new Error('Admin not found');
 
-      await updateAdmin(id, input);
-      return { id, ...input };
+      // Check if idCard is being changed and if it conflicts with another admin
+      if (input.idCard !== admins[index].idCard) {
+        const existingAdmin = admins.find(admin => 
+          admin.id !== parseInt(id) && admin.idCard === input.idCard
+        );
+        if (existingAdmin) throw new Error('Another admin with this ID Card already exists');
+      }
+
+      admins[index] = {
+        ...admins[index],
+        ...input,
+      };
+      saveData();
+      return admins[index];
     },
 
-    deleteAdmin: async (_: any, { id }: { id: string }) => {
-      const result = await deleteAdmin(id);
-      return result.deletedCount > 0;
+    deleteAdmin: (_: any, { id }: { id: string }) => {
+      const index = admins.findIndex(admin => admin.id === parseInt(id));
+      if (index === -1) throw new Error('Admin not found');
+
+      admins = admins.filter(admin => admin.id !== parseInt(id));
+      saveData();
+      return true;
     },
     
-    createOrder: async (_: unknown, { input }: { input: any }) => {
+    createOrder: (_: unknown, { input }: { input: OrderInput }) => {
       const newOrder = {
         id: input.id || `ORDER-${Date.now()}`,
-        items: input.items.map((item: any) => ({
+        items: input.items.map(item => ({
           productId: item.productId,
           title: item.title,
           price: item.price,
@@ -100,14 +134,21 @@ export const resolvers = {
         placeNumber: input.placeNumber || '',
         description: input.description || ''
       };
-      const result = await createOrder(newOrder);
-      return { _id: result.insertedId, ...newOrder };
+      orders.push(newOrder);
+      saveData();
+      return newOrder;
     },
     
-    updateOrderStatus: async (_: any, { id, status }: { id: string; status: string }) => {
-      await updateOrderStatus(id, status);
-      const order = await getOrder(id);
-      return order;
+    updateOrderStatus: (_: any, { id, status }: { id: string; status: string }) => {
+      const index = orders.findIndex(order => order.id === id);
+      if (index === -1) throw new Error('Order not found');
+      
+      orders[index] = {
+        ...orders[index],
+        status,
+      };
+      saveData();
+      return orders[index];
     },
   },
 }; 

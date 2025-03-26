@@ -2,14 +2,11 @@
   "name": "restaurant-menu",
   "version": "0.1.0",
   "private": true,
-  "type": "module",
   "scripts": {
     "dev": "next dev",
     "build": "next build --no-lint",
     "start": "next start",
-    "lint": "next lint",
-    "migrate": "node --loader ts-node/esm src/scripts/migrate-data.ts",
-    "test-db": "node --loader ts-node/esm src/scripts/test-connection.ts"
+    "lint": "next lint"
   },
   "dependencies": {
     "@apollo/client": "^3.13.4",
@@ -23,8 +20,6 @@
     "@tanstack/react-query": "^5.67.2",
     "@types/qrcode.react": "^3.0.0",
     "@types/uuid": "^10.0.0",
-    "critters": "^0.0.25",
-    "dotenv": "^16.4.7",
     "gsap": "^3.12.7",
     "mongodb": "^6.15.0",
     "next": "15.2.2",
@@ -45,7 +40,6 @@
     "@types/react-query": "^1.2.9",
     "eslint": "^9.22.0",
     "eslint-config-next": "^15.2.2",
-    "ts-node": "^10.9.2",
     "typescript": "^5"
   }
 }
