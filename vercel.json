@@ -7,7 +7,6 @@
   "regions": ["sin1"],
   "env": {
     "MONGODB_URI": "mongodb+srv://omid138089:XnekMAqCrpfvKqCS@cluster0.evgd7xi.mongodb.net/restaurant-menu?retryWrites=true&w=majority&appName=Cluster0&ssl=true&tls=true&tlsAllowInvalidCertificates=true&tlsAllowInvalidHostnames=true",
-    "NEXT_PUBLIC_GRAPHQL_URL": "https://restaurant-menu.vercel.app/api/graphql",
-    "NEXT_PUBLIC_API_URL": "https://restaurant-menu.vercel.app/api"
+    "NEXT_PUBLIC_GRAPHQL_URL": "https://restaurant-menu-seven-xi.vercel.app/api/graphql"
   }
 } 
