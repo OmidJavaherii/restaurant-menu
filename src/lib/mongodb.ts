@@ -17,7 +17,7 @@ const uri = process.env.MONGODB_URI;
 const options: MongoClientOptions = {
   maxPoolSize: 50,
   minPoolSize: 10,
-  serverSelectionTimeoutMS: 5000,
+  serverSelectionTimeoutMS: 10000,
   connectTimeoutMS: 10000,
   socketTimeoutMS: 45000,
   ssl: true,
@@ -30,8 +30,9 @@ const options: MongoClientOptions = {
   maxIdleTimeMS: 60000,
   heartbeatFrequencyMS: 10000,
   compressors: 'zlib',
-  readPreference: 'secondaryPreferred',
-  writeConcern: { w: 'majority', wtimeout: 5000 },
+  readPreference: 'primary',
+  writeConcern: { w: 'majority', wtimeout: 10000 },
+  family: 4,
 };
 
 let client;

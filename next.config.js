@@ -21,8 +21,9 @@ const nextConfig = {
   },
   experimental: {
     serverActions: {
-      allowedOrigins: ['localhost:3000', 'restaurant-menu-omid138089.vercel.app']
-    }
+      allowedOrigins: ['restaurant-menu-rose-eight.vercel.app', 'localhost:3000']
+    },
+    serverComponentsExternalPackages: ['mongodb'],
   },
   webpack: (config) => {
     config.module.rules.push({
@@ -39,11 +40,19 @@ const nextConfig = {
         headers: [
           {
             key: 'Access-Control-Allow-Origin',
-            value: '*',
+            value: 'https://restaurant-menu-rose-eight.vercel.app',
           },
           {
             key: 'Access-Control-Allow-Methods',
             value: 'GET,OPTIONS,PATCH,DELETE,POST,PUT',
+          },
+          {
+            key: 'Access-Control-Allow-Headers',
+            value: 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version',
+          },
+          {
+            key: 'Access-Control-Allow-Credentials',
+            value: 'true',
           },
           {
             key: 'Cache-Control',
